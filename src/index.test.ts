@@ -8,7 +8,8 @@ XDR.config((xdr) => {
     ['version', xdr.int()],
     ['fee', xdr.uint()],
     ['fee', xdr.uint()],
-    ['authorize', xdr.bool()]
+    ['authorize', xdr.bool()],
+    ["msg", xdr.string(11)]
   ])
 }, types)
 
@@ -17,7 +18,8 @@ describe('#toJSON', function() {
     let color = new types.Color({
       version: -1,
       fee: 100,
-      authorize: true
+      authorize: true,
+      msg: 'hello world'
     })
 
     expect(toJSON(types, types.Color, color)).toMatchSnapshot()

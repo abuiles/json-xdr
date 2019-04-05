@@ -4,6 +4,7 @@ exports[`#toJSON converts XDR to JSON 1`] = `
 Object {
   "authorize": true,
   "fee": 100,
+  "msg": "hello world",
   "version": -1,
 }
 `;
