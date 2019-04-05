@@ -1,5 +1,7 @@
 # JSON <-> XDR
 
+[![Build Status](https://travis-ci.org/abuiles/json-xdr.svg?branch=master)](https://travis-ci.org/abuiles/json-xdr)
+
 This library augments [js-xdr](https://github.com/stellar/js-xdr) to let you convert XDR to JSON and JSON to XDR.
 
 ## Installation
