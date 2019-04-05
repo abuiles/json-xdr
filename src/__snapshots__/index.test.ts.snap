@@ -2,8 +2,7 @@
 
 exports[`#toJSON converts XDR to JSON 1`] = `
 Object {
-  "blue": 2,
-  "green": 1,
-  "red": 0,
+  "fee": 100,
+  "version": -1,
 }
 `;

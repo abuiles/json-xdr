@@ -5,18 +5,16 @@ const types = XDR.config();
 
 XDR.config((xdr) => {
   xdr.struct('Color', [
-    ['red', xdr.int()],
-    ['green', xdr.int()],
-    ['blue', xdr.int()]
+    ['version', xdr.int()],
+    ['fee', xdr.uint()]
   ]);
 }, types);
 
 describe('#toJSON', function() {
   test('converts XDR to JSON', () => {
     let color = new types.Color({
-      red: 0,
-      green: 1,
-      blue: 2
+      version: -1,
+      fee: 100
     });
 
     expect(toJSON(types, types.Color, color)).toMatchSnapshot()
