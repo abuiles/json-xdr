@@ -20,7 +20,7 @@ Given a XDR representing a Transaction struct as defined in [examples/xdr.js](ht
 import jsonXDR from 'json-xdr'
 import types from './examples/xdr'
 
-> jsonXDR.toJSON(ATransactionStruct)
+> jsonXDR.toJSON(types, types.Transaction, ATransactionStruct)
 {
   sourceAccount: "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
   fee: 100,
