@@ -4,7 +4,10 @@ exports[`#toJSON converts XDR to JSON 1`] = `
 Object {
   "authorize": true,
   "fee": 100,
+  "lat": 37.7645352,
+  "lon": -122.421069,
   "msg": "hello world",
+  "quadruple": 1.5,
   "version": -1,
 }
 `;

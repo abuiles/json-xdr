@@ -9,7 +9,10 @@ XDR.config((xdr) => {
     ['fee', xdr.uint()],
     ['fee', xdr.uint()],
     ['authorize', xdr.bool()],
-    ["msg", xdr.string(11)]
+    ['msg', xdr.string(11)],
+    ['lat', xdr.float()],
+    ['lon', xdr.double()],
+    ['quadruple', xdr.quadruple()]
   ])
 }, types)
 
@@ -19,7 +22,10 @@ describe('#toJSON', function() {
       version: -1,
       fee: 100,
       authorize: true,
-      msg: 'hello world'
+      msg: 'hello world',
+      lat: 37.7645352,
+      lon: -122.421069,
+      quadruple: 1.5
     })
 
     expect(toJSON(types, types.Color, color)).toMatchSnapshot()
