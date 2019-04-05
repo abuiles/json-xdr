@@ -1,22 +1,22 @@
 import { toJSON } from './index'
-import * as XDR from 'js-xdr';
+import * as XDR from 'js-xdr'
 
-const types = XDR.config();
+const types = XDR.config()
 
 XDR.config((xdr) => {
   xdr.struct('Color', [
     ['version', xdr.int()],
     ['fee', xdr.uint()]
-  ]);
-}, types);
+  ])
+}, types)
 
 describe('#toJSON', function() {
   test('converts XDR to JSON', () => {
     let color = new types.Color({
       version: -1,
       fee: 100
-    });
+    })
 
     expect(toJSON(types, types.Color, color)).toMatchSnapshot()
-  });
+  })
 })
