@@ -8,6 +8,7 @@ Object {
   "lon": -122.421069,
   "msg": "hello world",
   "quadruple": 1.5,
+  "theVoid": undefined,
   "version": -1,
 }
 `;

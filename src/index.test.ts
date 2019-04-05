@@ -12,7 +12,8 @@ XDR.config((xdr) => {
     ['msg', xdr.string(11)],
     ['lat', xdr.float()],
     ['lon', xdr.double()],
-    ['quadruple', xdr.quadruple()]
+    ['quadruple', xdr.quadruple()],
+    ['theVoid', xdr.void()]
   ])
 }, types)
 
@@ -25,7 +26,8 @@ describe('#toJSON', function() {
       msg: 'hello world',
       lat: 37.7645352,
       lon: -122.421069,
-      quadruple: 1.5
+      quadruple: 1.5,
+      theVoid: undefined
     })
 
     expect(toJSON(types, types.Color, color)).toMatchSnapshot()
