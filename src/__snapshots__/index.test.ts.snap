@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#toJSON converts XDR to JSON 1`] = `
+Object {
+  "blue": 2,
+  "green": 1,
+  "red": 0,
+}
+`;
