@@ -13,7 +13,9 @@ XDR.config((xdr) => {
     ['lat', xdr.float()],
     ['lon', xdr.double()],
     ['quadruple', xdr.quadruple()],
-    ['theVoid', xdr.void()]
+    ['theVoid', xdr.void()],
+    ['offerId', xdr.uhyper()],
+    ['signedSequence', xdr.hyper()]
   ])
 }, types)
 
@@ -27,7 +29,9 @@ describe('#toJSON', function() {
       lat: 37.7645352,
       lon: -122.421069,
       quadruple: 1.5,
-      theVoid: undefined
+      theVoid: undefined,
+      signedSequence: XDR.Hyper.fromString('-1059'),
+      offerId: XDR.UnsignedHyper.fromString('12345')
     })
 
     expect(toJSON(types, types.Color, color)).toMatchSnapshot()
