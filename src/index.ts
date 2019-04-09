@@ -1,14 +1,14 @@
-import * as XDR from 'js-xdr'
+import { Hyper, UnsignedHyper } from 'js-xdr'
 
-function serializeHyper(value: XDR.Hyper): string {
-  return value.toString();
+function serializeHyper(value: Hyper): string {
+  return value.toString()
 }
 
 function serialize(xdrType: any, value: any) {
-  if (value instanceof XDR.Hyper || value instanceof XDR.UnsignedHyper) {
-    return serializeHyper(value);
+  if (value instanceof Hyper || value instanceof UnsignedHyper) {
+    return serializeHyper(value)
   } else {
-    return value;
+    return value
   }
 }
 

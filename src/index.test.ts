@@ -1,9 +1,7 @@
 import { toJSON } from './index'
 import * as XDR from 'js-xdr'
 
-const types = XDR.config()
-
-XDR.config((xdr) => {
+const types = XDR.config((xdr) => {
   xdr.struct('Color', [
     ['version', xdr.int()],
     ['fee', xdr.uint()],
@@ -17,7 +15,7 @@ XDR.config((xdr) => {
     ['offerId', xdr.uhyper()],
     ['signedSequence', xdr.hyper()]
   ])
-}, types)
+})
 
 describe('#toJSON', function() {
   test('converts XDR to JSON', () => {
