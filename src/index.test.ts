@@ -11,7 +11,6 @@ const types = XDR.config((xdr) => {
   xdr.struct('aStruct', [
     ['version', xdr.int()],
     ['fee', xdr.uint()],
-    ['fee', xdr.uint()],
     ['authorize', xdr.bool()],
     ['msg', xdr.string(11)],
     ['lat', xdr.float()],
