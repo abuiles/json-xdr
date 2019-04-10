@@ -28,4 +28,7 @@ declare module 'js-xdr' {
 
   export class UnsignedHyper extends Long {
   }
+
+  export class VarOpaque {
+  }
 }
