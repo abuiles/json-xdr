@@ -1,4 +1,9 @@
-import { Hyper, UnsignedHyper, Enum } from 'js-xdr'
+import { Hyper, UnsignedHyper, Enum, Struct } from 'js-xdr'
+
+interface StructConstructable {
+  new(object): Struct
+  _fields: [string, any][]
+}
 
 function serializeHyper(value: Hyper): string {
   return value.toString()
@@ -18,7 +23,7 @@ function serialize(xdrType: any, value: any) {
   }
 }
 
-export function toJSON(types: any, structType: any, struct: any): any {
+export function toJSON(types: object, structType: StructConstructable, struct: Struct): any {
   return structType._fields.reduce(function(json, [name, type]) {
     json[name] = serialize(type, struct._attributes[name])
     return json

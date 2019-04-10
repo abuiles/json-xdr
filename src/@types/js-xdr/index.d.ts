@@ -6,6 +6,11 @@
 declare module 'js-xdr' {
   import * as Long from 'long'
 
+  export class ChildStruct extends Struct {
+  }
+
+  export function config(fn: any, types?: any): any;
+
   export class Enum {
     name: string
     value: number
@@ -14,8 +19,10 @@ declare module 'js-xdr' {
   export class Hyper extends Long {
   }
 
-  export class UnsignedHyper extends Long {
+  export class Struct {
+    _attributes: object
   }
 
-  export function config(fn: any, types?: any): any;
+  export class UnsignedHyper extends Long {
+  }
 }
