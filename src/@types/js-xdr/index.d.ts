@@ -6,6 +6,11 @@
 declare module 'js-xdr' {
   import * as Long from 'long'
 
+  export class Array {
+    _childType: any
+    _length: number
+  }
+
   export class ChildStruct extends Struct {
   }
 
@@ -27,6 +32,11 @@ declare module 'js-xdr' {
   }
 
   export class UnsignedHyper extends Long {
+  }
+
+  export class VarArray {
+    _childType: any
+    _length: number
   }
 
   export class VarOpaque {
