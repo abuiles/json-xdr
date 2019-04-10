@@ -1,4 +1,4 @@
-import { Hyper, UnsignedHyper, Enum, Struct, Opaque } from 'js-xdr'
+import { Hyper, UnsignedHyper, Enum, Struct, Opaque, VarOpaque } from 'js-xdr'
 
 interface StructConstructable {
   new(object): Struct
@@ -18,7 +18,7 @@ function serialize(xdrType: any, value: any) {
     return serializeHyper(value)
   } else if (value instanceof Enum) {
     return serializeEnum(value)
-  } else if (xdrType instanceof Opaque) {
+  } else if (xdrType instanceof Opaque || xdrType instanceof VarOpaque) {
     // assume value it's buffer like
     return value.toString('base64')
   } else {

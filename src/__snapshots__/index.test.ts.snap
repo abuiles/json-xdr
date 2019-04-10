@@ -9,8 +9,10 @@ Object {
   "lon": -122.421069,
   "msg": "hello world",
   "offerId": "12345",
+  "opaque": "AAAB",
   "signedSequence": "-1059",
   "theVoid": undefined,
+  "varOpaque": "AAE=",
   "version": -1,
 }
 `;
