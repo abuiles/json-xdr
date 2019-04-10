@@ -87,7 +87,7 @@ let aXDRTransaction = jsonXDR.toXDR(types, types.Transaction, json)
 
 Opaque data will be serialied as a `base64` encoded string.
 
-For the following definition:.
+For the following definition:
 
 
 ``` javascript
@@ -116,3 +116,47 @@ import jsonXDR from 'json-xdr'
   varOpaque: 'AAE='
 }
 ```
+
+### Array
+
+`Array` and `VarArray` are serialized as a JavaScript Arrays and then for each element we
+apply the serialization rules defined in this library.
+
+For the following definition:
+
+
+``` javascript
+const types = XDR.config((xdr) => {
+  xdr.typedef("Hash", xdr.opaque(2));
+
+  xdr.struct('Event', [
+    ["attendees", xdr.int()],
+    ["eventName", xdr.string(50)],
+    ["secretSpeakers", xdr.array(xdr.lookup("Hash"), 2)],
+    ["speakers", xdr.varArray(xdr.string())]
+  ])
+})
+
+let event = new types.Event({
+  attendees: 5,
+  eventName: "Lumenauts get together",
+  secretSpeakers: [Buffer.from([0, 0]), Buffer.from([0, 1])],
+  speakers: ['Jed', 'Tom', 'Zac']
+})
+```
+
+Calling `#toJSON` will result in:
+
+``` javascript
+import jsonXDR from 'json-xdr'
+
+> jsonXDR.toJSON(types, types.Event, event)
+{
+  attendees: 5,
+  eventName: 'Lumenauts get together',
+  secretSpeakers: [ 'AAA=', 'AAE=' ],
+  speakers: [ 'Jed', 'Tom', 'Zac' ]
+}
+```
+
+Notice how `speakers` get serialized as a JavaScript `String`  while `secretSpeakers` which is an `Opaque`, gets serialized as [documented above](#opaque-and-varopaque).
