@@ -6,6 +6,11 @@
 declare module 'js-xdr' {
   import * as Long from 'long'
 
+  export class Enum {
+    name: string
+    value: number
+  }
+
   export class Hyper extends Long {
   }
 
