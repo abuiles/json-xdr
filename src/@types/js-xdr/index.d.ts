@@ -19,6 +19,9 @@ declare module 'js-xdr' {
   export class Hyper extends Long {
   }
 
+  export class Opaque {
+  }
+
   export class Struct {
     _attributes: object
   }

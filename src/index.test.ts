@@ -18,7 +18,8 @@ const types = XDR.config((xdr) => {
     ['theVoid', xdr.void()],
     ['offerId', xdr.uhyper()],
     ['signedSequence', xdr.hyper()],
-    ['color', xdr.lookup('Color')]
+    ['color', xdr.lookup('Color')],
+    ['opaque', xdr.opaque(3)]
   ])
 })
 
@@ -34,7 +35,8 @@ describe('#toJSON', function() {
       theVoid: undefined,
       signedSequence: XDR.Hyper.fromString('-1059'),
       offerId: XDR.UnsignedHyper.fromString('12345'),
-      color: types.Color.green()
+      color: types.Color.green(),
+      opaque: Buffer.from([0, 0, 1])
     })
 
     expect(toJSON(types, types.aStruct, aStruct)).toMatchSnapshot()
