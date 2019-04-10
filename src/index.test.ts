@@ -8,6 +8,8 @@ const types = XDR.config((xdr) => {
     blue: 2
   })
 
+  xdr.typedef("Hash", xdr.opaque(2));
+
   xdr.struct('aStruct', [
     ['version', xdr.int()],
     ['fee', xdr.uint()],
@@ -20,7 +22,8 @@ const types = XDR.config((xdr) => {
     ['signedSequence', xdr.hyper()],
     ['color', xdr.lookup('Color')],
     ['opaque', xdr.opaque(3)],
-    ['varOpaque', xdr.varOpaque(2)]
+    ['varOpaque', xdr.varOpaque(2)],
+    ["skipList", xdr.array(xdr.lookup("Hash"), 2)]
   ])
 })
 
@@ -38,7 +41,8 @@ describe('#toJSON', function() {
       offerId: XDR.UnsignedHyper.fromString('12345'),
       color: types.Color.green(),
       opaque: Buffer.from([0, 0, 1]),
-      varOpaque: Buffer.from([0, 1])
+      varOpaque: Buffer.from([0, 1]),
+      skipList: [Buffer.from([0, 0]), Buffer.from([0, 1])]
     })
 
     expect(toJSON(types, types.aStruct, aStruct)).toMatchSnapshot()

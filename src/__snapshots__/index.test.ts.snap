@@ -11,6 +11,10 @@ Object {
   "offerId": "12345",
   "opaque": "AAAB",
   "signedSequence": "-1059",
+  "skipList": Array [
+    "AAA=",
+    "AAE=",
+  ],
   "theVoid": undefined,
   "varOpaque": "AAE=",
   "version": -1,
