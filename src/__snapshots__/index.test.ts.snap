@@ -9,7 +9,6 @@ Object {
   "lon": -122.421069,
   "msg": "hello world",
   "offerId": "12345",
-  "quadruple": 1.5,
   "signedSequence": "-1059",
   "theVoid": undefined,
   "version": -1,
