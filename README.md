@@ -80,3 +80,39 @@ let json = {
 
 let aXDRTransaction = jsonXDR.toXDR(types, types.Transaction, json)
 ```
+
+## Serialization format
+
+### Opaque and VarOpaque
+
+Opaque data will be serialied as a `base64` encoded string.
+
+For the following definition:.
+
+
+``` javascript
+const types = XDR.config((xdr) => {
+  xdr.struct('withOpaque', [
+    ['opaque', xdr.opaque(3)],
+    ['varOpaque', xdr.varOpaque(2)]
+  ])
+})
+
+let withOpaque = new types.withOpaque({
+  opaque: Buffer.from([0, 0, 1]),
+  varOpaque: Buffer.from([0, 1])
+})
+```
+
+Calling `#toJSON` will result in:
+
+
+``` javascript
+import jsonXDR from 'json-xdr'
+
+> jsonXDR.toJSON(types, types.withOpaque, withOpaque)
+{
+  opaque: 'AAAB',
+  varOpaque: 'AAE='
+}
+```
