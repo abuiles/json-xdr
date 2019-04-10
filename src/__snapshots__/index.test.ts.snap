@@ -17,6 +17,11 @@ Object {
   ],
   "theVoid": undefined,
   "varOpaque": "AAE=",
+  "varSkipList": Array [
+    "AAA=",
+    "AAE=",
+    "AQE=",
+  ],
   "version": -1,
 }
 `;

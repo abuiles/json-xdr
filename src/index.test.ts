@@ -23,7 +23,8 @@ const types = XDR.config((xdr) => {
     ['color', xdr.lookup('Color')],
     ['opaque', xdr.opaque(3)],
     ['varOpaque', xdr.varOpaque(2)],
-    ["skipList", xdr.array(xdr.lookup("Hash"), 2)]
+    ["skipList", xdr.array(xdr.lookup("Hash"), 2)],
+    ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)],
   ])
 })
 
@@ -42,7 +43,8 @@ describe('#toJSON', function() {
       color: types.Color.green(),
       opaque: Buffer.from([0, 0, 1]),
       varOpaque: Buffer.from([0, 1]),
-      skipList: [Buffer.from([0, 0]), Buffer.from([0, 1])]
+      skipList: [Buffer.from([0, 0]), Buffer.from([0, 1])],
+      varSkipList: [Buffer.from([0, 0]), Buffer.from([0, 1]), Buffer.from([1, 1])]
     })
 
     expect(toJSON(types, types.aStruct, aStruct)).toMatchSnapshot()

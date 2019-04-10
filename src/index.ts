@@ -1,4 +1,4 @@
-import { Array, Hyper, UnsignedHyper, Enum, Struct, Opaque, VarOpaque } from 'js-xdr'
+import { Array, Hyper, UnsignedHyper, Enum, Struct, Opaque, VarArray, VarOpaque } from 'js-xdr'
 
 interface StructConstructable {
   new(object): Struct
@@ -21,7 +21,7 @@ function serialize(xdrType: any, value: any) {
   } else if (xdrType instanceof Opaque || xdrType instanceof VarOpaque) {
     // assume value it's buffer like
     return value.toString('base64')
-  } else if (xdrType instanceof Array) {
+  } else if (xdrType instanceof Array || xdrType instanceof VarArray) {
     return value.map(val => serialize(xdrType._childType, val))
   } else {
     return value
