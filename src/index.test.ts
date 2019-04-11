@@ -8,12 +8,12 @@ const types = XDR.config((xdr) => {
     blue: 2
   })
 
-  xdr.typedef("Hash", xdr.opaque(2));
-  xdr.typedef("Int32", xdr.int());
+  xdr.typedef('Hash', xdr.opaque(2));
+  xdr.typedef('Int32', xdr.int());
 
-  xdr.struct("Price", [
-    ["n", xdr.lookup("Int32")],
-    ["d", xdr.lookup("Int32")],
+  xdr.struct('Price', [
+    ['n', xdr.lookup('Int32')],
+    ['d', xdr.lookup('Int32')],
   ]);
 
   xdr.struct('aStruct', [
@@ -29,8 +29,8 @@ const types = XDR.config((xdr) => {
     ['color', xdr.lookup('Color')],
     ['opaque', xdr.opaque(3)],
     ['varOpaque', xdr.varOpaque(2)],
-    ["skipList", xdr.array(xdr.lookup("Hash"), 2)],
-    ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)],
+    ['skipList', xdr.array(xdr.lookup('Hash'), 2)],
+    ['varSkipList', xdr.varArray(xdr.lookup('Hash'), 2147483647)],
     ['price', xdr.lookup('Price')]
   ])
 })
