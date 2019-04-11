@@ -26,7 +26,8 @@ const types = XDR.config((xdr) => {
 
   xdr.enum('TransactionMetaType', {
     none: 0,
-    paid: 1
+    paid: 1,
+    pending: 2
   });
 
   xdr.union('Memo', {
@@ -52,8 +53,13 @@ const types = XDR.config((xdr) => {
     ],
     arms: {
       price: xdr.lookup('Price')
-    }
+    },
+    defaultArm: xdr.void()
   });
+
+  xdr.struct('Transaction', [
+    ['meta', xdr.lookup('TransactionMeta')]
+  ])
 
   xdr.struct('aStruct', [
     ['version', xdr.int()],
@@ -105,5 +111,22 @@ describe('#toJSON', function() {
     })
 
     expect(toJSON(types, aStruct)).toMatchSnapshot()
+  })
+
+  test('unions with default arms', () => {
+    let transaction = new types.Transaction({
+      meta: types.TransactionMeta.paid(new types.Price({
+        n: 2,
+        d: 1
+      }))
+    })
+
+    expect(toJSON(types, transaction)).toMatchSnapshot()
+
+    transaction = new types.Transaction({
+      meta: types.TransactionMeta.pending()
+    })
+
+    expect(toJSON(types, transaction)).toMatchSnapshot()
   })
 })

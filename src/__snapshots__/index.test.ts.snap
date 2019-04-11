@@ -40,3 +40,23 @@ Object {
   "version": -1,
 }
 `;
+
+exports[`#toJSON unions with default arms 1`] = `
+Object {
+  "meta": Object {
+    "_type": "paid",
+    "price": Object {
+      "d": 1,
+      "n": 2,
+    },
+  },
+}
+`;
+
+exports[`#toJSON unions with default arms 2`] = `
+Object {
+  "meta": Object {
+    "_type": "pending",
+  },
+}
+`;
