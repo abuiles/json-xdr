@@ -23,18 +23,21 @@ function serialize(xdrType: any, value: any): any {
     return value.toString('base64')
   } else if (xdrType instanceof Array || xdrType instanceof VarArray) {
     return value.map(val => serialize(xdrType._childType, val))
+  } else if (value instanceof Struct) {
+    return serializeStruct(value)
   } else {
     return value
   }
 }
 
-function serializeStruct(structType: StructConstructable, struct: Struct): any {
-  return structType._fields.reduce(function(json, [name, type]) {
+function serializeStruct(struct: Struct): any {
+  const structConstructor: StructConstructable = Object.getPrototypeOf(struct).constructor
+  return structConstructor._fields.reduce(function(json, [name, type]) {
     json[name] = serialize(type, struct._attributes[name])
     return json
-  }, {});
+  }, {})
 }
 
-export function toJSON(types: object, structType: StructConstructable, struct: Struct): any {
-  return serializeStruct(structType, struct);
+export function toJSON(types: object, struct: Struct): any {
+  return serializeStruct(struct);
 }
