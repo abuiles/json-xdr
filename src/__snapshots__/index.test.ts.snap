@@ -11,6 +11,13 @@ Object {
     "_type": "memoText",
     "text": "hola",
   },
+  "meta": Object {
+    "_type": "paid",
+    "price": Object {
+      "d": 1,
+      "n": 2,
+    },
+  },
   "msg": "hello world",
   "offerId": "12345",
   "opaque": "AAAB",

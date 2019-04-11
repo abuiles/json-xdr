@@ -16,7 +16,7 @@ const types = XDR.config((xdr) => {
     ['d', xdr.lookup('Int32')],
   ]);
 
-  xdr.enum("MemoType", {
+  xdr.enum('MemoType', {
     memoNone: 0,
     memoText: 1,
     memoId: 2,
@@ -24,18 +24,35 @@ const types = XDR.config((xdr) => {
     memoReturn: 4,
   });
 
-  xdr.union("Memo", {
-    switchOn: xdr.lookup("MemoType"),
-    switchName: "type",
+  xdr.enum('TransactionMetaType', {
+    none: 0,
+    paid: 1
+  });
+
+  xdr.union('Memo', {
+    switchOn: xdr.lookup('MemoType'),
+    switchName: 'type',
     switches: [
-      ["memoNone", xdr.void()],
-      ["memoText", "text"],
-      ["memoId", "id"],
+      ['memoNone', xdr.void()],
+      ['memoText', 'text'],
+      ['memoId', 'id']
     ],
     arms: {
       text: xdr.string(28),
-      id: xdr.lookup("Int32"),
+      id: xdr.lookup('Int32'),
+      price: xdr.lookup('Price')
     },
+  });
+
+  xdr.union('TransactionMeta', {
+    switchOn: xdr.lookup('TransactionMetaType'),
+    switches: [
+      ['none', xdr.void()],
+      ['paid', 'price']
+    ],
+    arms: {
+      price: xdr.lookup('Price')
+    }
   });
 
   xdr.struct('aStruct', [
@@ -54,14 +71,13 @@ const types = XDR.config((xdr) => {
     ['skipList', xdr.array(xdr.lookup('Hash'), 2)],
     ['varSkipList', xdr.varArray(xdr.lookup('Hash'), 2147483647)],
     ['price', xdr.lookup('Price')],
-    ['memo', xdr.lookup('Memo')]
+    ['memo', xdr.lookup('Memo')],
+    ['meta', xdr.lookup('TransactionMeta')]
   ])
 })
 
 describe('#toJSON', function() {
   test('converts XDR to JSON', () => {
-
-    debugger;
     let aStruct = new types.aStruct({
       version: -1,
       fee: 100,
@@ -81,7 +97,11 @@ describe('#toJSON', function() {
         n: 2,
         d: 1
       }),
-      memo: types.Memo.memoText('hola')
+      memo: types.Memo.memoText('hola'),
+      meta: types.TransactionMeta.paid(new types.Price({
+        n: 2,
+        d: 1
+      }))
     })
 
     expect(toJSON(types, aStruct)).toMatchSnapshot()
