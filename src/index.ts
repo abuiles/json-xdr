@@ -31,7 +31,7 @@ function serialize(xdrType: any, value: any): any {
 }
 
 function serializeStruct(struct: Struct): any {
-  const structConstructor: StructConstructable = Object.getPrototypeOf(struct).constructor
+  const structConstructor: StructConstructable = struct.constructor as StructConstructable
   return structConstructor._fields.reduce(function(json, [name, type]) {
     json[name] = serialize(type, struct._attributes[name])
     return json
