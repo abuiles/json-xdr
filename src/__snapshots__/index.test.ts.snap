@@ -10,6 +10,10 @@ Object {
   "msg": "hello world",
   "offerId": "12345",
   "opaque": "AAAB",
+  "price": Object {
+    "d": 1,
+    "n": 2,
+  },
   "signedSequence": "-1059",
   "skipList": Array [
     "AAA=",

@@ -9,6 +9,12 @@ const types = XDR.config((xdr) => {
   })
 
   xdr.typedef("Hash", xdr.opaque(2));
+  xdr.typedef("Int32", xdr.int());
+
+  xdr.struct("Price", [
+    ["n", xdr.lookup("Int32")],
+    ["d", xdr.lookup("Int32")],
+  ]);
 
   xdr.struct('aStruct', [
     ['version', xdr.int()],
@@ -25,6 +31,7 @@ const types = XDR.config((xdr) => {
     ['varOpaque', xdr.varOpaque(2)],
     ["skipList", xdr.array(xdr.lookup("Hash"), 2)],
     ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)],
+    ['price', xdr.lookup('Price')]
   ])
 })
 
@@ -44,9 +51,13 @@ describe('#toJSON', function() {
       opaque: Buffer.from([0, 0, 1]),
       varOpaque: Buffer.from([0, 1]),
       skipList: [Buffer.from([0, 0]), Buffer.from([0, 1])],
-      varSkipList: [Buffer.from([0, 0]), Buffer.from([0, 1]), Buffer.from([1, 1])]
+      varSkipList: [Buffer.from([0, 0]), Buffer.from([0, 1]), Buffer.from([1, 1])],
+      price: new types.Price({
+        n: 2,
+        d: 1
+      })
     })
 
-    expect(toJSON(types, types.aStruct, aStruct)).toMatchSnapshot()
+    expect(toJSON(types, aStruct)).toMatchSnapshot()
   })
 })
