@@ -31,6 +31,13 @@ declare module 'js-xdr' {
     _attributes: object
   }
 
+  export class Union {
+    switch(): any
+    armType(): any
+    value(): any
+    arm(): any
+  }
+
   export class UnsignedHyper extends Long {
   }
 

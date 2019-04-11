@@ -1,4 +1,4 @@
-import { Array, Hyper, UnsignedHyper, Enum, Struct, Opaque, VarArray, VarOpaque } from 'js-xdr'
+import { Array, Hyper, UnsignedHyper, Enum, Struct, Opaque, Union, VarArray, VarOpaque } from 'js-xdr'
 
 interface StructConstructable {
   new(object): Struct
@@ -13,6 +13,21 @@ function serializeEnum({ name }: Enum): string {
   return name
 }
 
+function serializeUnion(union: Union): any {
+
+  let serialized = {
+    _type: union.switch().name
+  }
+
+  let value = serialize(union.armType(), union.value())
+
+  if (value !== undefined) {
+    serialized[union.arm()] = value
+  }
+
+  return serialized;
+}
+
 function serialize(xdrType: any, value: any): any {
   if (value instanceof Hyper || value instanceof UnsignedHyper) {
     return serializeHyper(value)
@@ -25,6 +40,8 @@ function serialize(xdrType: any, value: any): any {
     return value.map(val => serialize(xdrType._childType, val))
   } else if (value instanceof Struct) {
     return serializeStruct(value)
+  } else if (value instanceof Union) {
+    return serializeUnion(value)
   } else {
     return value
   }
