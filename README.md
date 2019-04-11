@@ -85,7 +85,7 @@ let aXDRTransaction = jsonXDR.toXDR(types, types.Transaction, json)
 
 ### Opaque and VarOpaque
 
-Opaque data will be serialied as a `base64` encoded string.
+Opaque data will be serialized as a `base64` encoded string.
 
 For the following definition:
 
