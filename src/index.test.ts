@@ -16,6 +16,28 @@ const types = XDR.config((xdr) => {
     ['d', xdr.lookup('Int32')],
   ]);
 
+  xdr.enum("MemoType", {
+    memoNone: 0,
+    memoText: 1,
+    memoId: 2,
+    memoHash: 3,
+    memoReturn: 4,
+  });
+
+  xdr.union("Memo", {
+    switchOn: xdr.lookup("MemoType"),
+    switchName: "type",
+    switches: [
+      ["memoNone", xdr.void()],
+      ["memoText", "text"],
+      ["memoId", "id"],
+    ],
+    arms: {
+      text: xdr.string(28),
+      id: xdr.lookup("Int32"),
+    },
+  });
+
   xdr.struct('aStruct', [
     ['version', xdr.int()],
     ['fee', xdr.uint()],
@@ -31,12 +53,15 @@ const types = XDR.config((xdr) => {
     ['varOpaque', xdr.varOpaque(2)],
     ['skipList', xdr.array(xdr.lookup('Hash'), 2)],
     ['varSkipList', xdr.varArray(xdr.lookup('Hash'), 2147483647)],
-    ['price', xdr.lookup('Price')]
+    ['price', xdr.lookup('Price')],
+    ['memo', xdr.lookup('Memo')]
   ])
 })
 
 describe('#toJSON', function() {
   test('converts XDR to JSON', () => {
+
+    debugger;
     let aStruct = new types.aStruct({
       version: -1,
       fee: 100,
@@ -55,7 +80,8 @@ describe('#toJSON', function() {
       price: new types.Price({
         n: 2,
         d: 1
-      })
+      }),
+      memo: types.Memo.memoText('hola')
     })
 
     expect(toJSON(types, aStruct)).toMatchSnapshot()

@@ -7,6 +7,10 @@ Object {
   "fee": 100,
   "lat": 37.7645352,
   "lon": -122.421069,
+  "memo": Object {
+    "_type": "memoText",
+    "text": "hola",
+  },
   "msg": "hello world",
   "offerId": "12345",
   "opaque": "AAAB",
