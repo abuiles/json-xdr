@@ -113,7 +113,7 @@ describe('#toJSON', function() {
     expect(toJSON(types, aStruct)).toMatchSnapshot()
   })
 
-  test('unions with default arms', () => {
+  test('union with struct arm', () => {
     let transaction = new types.Transaction({
       meta: types.TransactionMeta.paid(new types.Price({
         n: 2,
@@ -122,8 +122,10 @@ describe('#toJSON', function() {
     })
 
     expect(toJSON(types, transaction)).toMatchSnapshot()
+  })
 
-    transaction = new types.Transaction({
+  test('union default arm', () => {
+    let transaction = new types.Transaction({
       meta: types.TransactionMeta.pending()
     })
 
