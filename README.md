@@ -20,7 +20,7 @@ Given a XDR representing a Transaction struct as defined in [examples/xdr.js](ht
 import jsonXDR from 'json-xdr'
 import types from './examples/xdr'
 
-> jsonXDR.toJSON(types, types.Transaction, ATransactionStruct)
+> jsonXDR.toJSON(types, ATransactionStruct)
 {
   sourceAccount: "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
   fee: 100,
@@ -78,7 +78,7 @@ let json = {
   }
 }
 
-let aXDRTransaction = jsonXDR.toXDR(types, types.Transaction, json)
+let aXDRTransaction = jsonXDR.toXDR(types, json)
 ```
 
 ## Serialization format
@@ -110,7 +110,7 @@ Calling `#toJSON` will result in:
 ``` javascript
 import jsonXDR from 'json-xdr'
 
-> jsonXDR.toJSON(types, types.withOpaque, withOpaque)
+> jsonXDR.toJSON(types, withOpaque)
 {
   opaque: 'AAAB',
   varOpaque: 'AAE='
@@ -150,7 +150,7 @@ Calling `#toJSON` will result in:
 ``` javascript
 import jsonXDR from 'json-xdr'
 
-> jsonXDR.toJSON(types, types.Event, event)
+> jsonXDR.toJSON(types, event)
 {
   attendees: 5,
   eventName: 'Lumenauts get together',
