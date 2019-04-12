@@ -1,5 +1,5 @@
 import * as XDR from "js-xdr";
-import { toJSON } from "./index";
+import { toJSON, toXDR } from "./index";
 
 const types = XDR.config((xdr) => {
   xdr.enum("Color", {
@@ -151,5 +151,17 @@ describe("#toJSON", () => {
     });
 
     expect(toJSON(types, transaction)).toMatchSnapshot();
+  });
+});
+
+
+describe("#toXDR", () => {
+  test("converts JSON to XDR", () => {
+    const json = {
+      n: 2,
+      d: 1
+    };
+
+    expect(toXDR(types.Price, json)).toBeInstanceOf(types.Price)
   });
 });
