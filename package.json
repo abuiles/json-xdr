@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
+    "lint:ts": "tslint --project .",
     "build": "rm -rf dist/ && tsc"
   },
   "devDependencies": {
