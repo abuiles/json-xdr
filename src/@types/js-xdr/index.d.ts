@@ -3,12 +3,12 @@
 // Definitions by: Adolfo Builes <https://github.com/abuiles>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 3.4.1
-declare module 'js-xdr' {
-  import * as Long from 'long'
+declare module "js-xdr" {
+  import * as Long from "long";
 
   export class Array {
-    _childType: any
-    _length: number
+    public _childType: any;
+    public _length: number;
   }
 
   export class ChildStruct extends Struct {
@@ -17,8 +17,8 @@ declare module 'js-xdr' {
   export function config(fn: any, types?: any): any;
 
   export class Enum {
-    name: string
-    value: number
+    public name: string;
+    public value: number;
   }
 
   export class Hyper extends Long {
@@ -28,22 +28,22 @@ declare module 'js-xdr' {
   }
 
   export class Struct {
-    _attributes: object
+    public _attributes: object;
   }
 
   export class Union {
-    switch(): any
-    armType(): any
-    value(): any
-    arm(): any
+    public switch(): any;
+    public armType(): any;
+    public value(): any;
+    public arm(): any;
   }
 
   export class UnsignedHyper extends Long {
   }
 
   export class VarArray {
-    _childType: any
-    _length: number
+    public _childType: any;
+    public _length: number;
   }
 
   export class VarOpaque {
