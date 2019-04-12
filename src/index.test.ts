@@ -27,7 +27,8 @@ const types = XDR.config((xdr) => {
   xdr.enum('TransactionMetaType', {
     none: 0,
     paid: 1,
-    pending: 2
+    pending: 2,
+    rejected: 3
   });
 
   xdr.union('Memo', {
@@ -45,16 +46,20 @@ const types = XDR.config((xdr) => {
     },
   });
 
+  xdr.typedef('RejectionCode', xdr.option(xdr.int()));
+
   xdr.union('TransactionMeta', {
     switchOn: xdr.lookup('TransactionMetaType'),
     switches: [
       ['none', xdr.void()],
-      ['paid', 'price']
+      ['paid', 'price'],
+      ['rejected', 'rejected']
     ],
     arms: {
-      price: xdr.lookup('Price')
+      price: xdr.lookup('Price'),
+      rejected: xdr.lookup("RejectionCode")
     },
-    defaultArm: xdr.void()
+    defaultArm: xdr.string(28)
   });
 
   xdr.struct('Transaction', [
@@ -126,7 +131,23 @@ describe('#toJSON', function() {
 
   test('union default arm', () => {
     let transaction = new types.Transaction({
-      meta: types.TransactionMeta.pending()
+      meta: types.TransactionMeta.pending("waiting for documentation")
+    })
+
+    expect(toJSON(types, transaction)).toMatchSnapshot()
+  })
+
+  test('option with value', () => {
+    let transaction = new types.Transaction({
+      meta: types.TransactionMeta.rejected(2)
+    })
+
+    expect(toJSON(types, transaction)).toMatchSnapshot()
+  })
+
+  test('option without value', () => {
+    let transaction = new types.Transaction({
+      meta: types.TransactionMeta.rejected()
     })
 
     expect(toJSON(types, transaction)).toMatchSnapshot()

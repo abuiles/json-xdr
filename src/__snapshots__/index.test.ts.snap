@@ -41,10 +41,28 @@ Object {
 }
 `;
 
+exports[`#toJSON option with value 1`] = `
+Object {
+  "meta": Object {
+    "_type": "rejected",
+    "rejected": 2,
+  },
+}
+`;
+
+exports[`#toJSON option without value 1`] = `
+Object {
+  "meta": Object {
+    "_type": "rejected",
+  },
+}
+`;
+
 exports[`#toJSON union default arm 1`] = `
 Object {
   "meta": Object {
     "_type": "pending",
+    "default": "waiting for documentation",
   },
 }
 `;
