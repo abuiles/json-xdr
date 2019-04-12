@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "repository": "https://github.com/abuiles/json-xdr",
-  "author": "Adolfo Builes",
+  "author": "Adolfo Builes <builes.adolfo@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "jest",
