@@ -162,6 +162,9 @@ describe("#toXDR", () => {
       d: 1
     };
 
-    expect(toXDR(types.Price, json)).toBeInstanceOf(types.Price)
+    const xdr = toXDR(types.Price, json);
+
+    expect(xdr).toBeInstanceOf(types.Price)
+    expect(toJSON(types, xdr)).toMatchObject(json)
   });
 });
