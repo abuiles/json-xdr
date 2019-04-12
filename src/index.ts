@@ -5,6 +5,12 @@ interface StructConstructable {
   _fields: [string, any][]
 }
 
+interface UnionConstructor {
+  new(object): Struct
+  _switches: Map<any, any>
+  _defaultArm: any
+}
+
 function serializeHyper(value: Hyper): string {
   return value.toString()
 }
@@ -21,8 +27,16 @@ function serializeUnion(union: Union): any {
 
   let value = serialize(union.armType(), union.value())
 
+  let arm = union.arm()
+  let unionConst = union.constructor as UnionConstructor
+
+  // TODO: Add helper function to union to know if current value is the default arm.
+  if (!unionConst._switches.has(union.switch()) && !!unionConst._defaultArm) {
+    arm = 'default'
+  }
+
   if (value !== undefined) {
-    serialized[union.arm()] = value
+    serialized[arm] = value
   }
 
   return serialized;
