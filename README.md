@@ -14,6 +14,8 @@ npm install --save json-xdr
 
 ## Usage
 
+### Serializing from XDR to JSON
+
 Given a XDR representing a Transaction struct as defined in [examples/xdr.js](https://github.com/abuiles/json-xdr/blob/master/examples/xdr.js#L2440), you can convert it to JSON like the following:
 
 ```javascript
@@ -89,7 +91,6 @@ Opaque data will be serialized as a `base64` encoded string.
 
 For the following definition:
 
-
 ``` javascript
 const types = XDR.config((xdr) => {
   xdr.struct('withOpaque', [
@@ -160,3 +161,30 @@ import jsonXDR from 'json-xdr'
 ```
 
 Notice how `speakers` get serialized as a JavaScript `String`  while `secretSpeakers` which is an `Opaque`, gets serialized as [documented above](#opaque-and-varopaque).
+
+### Serializing from JSON to XDR
+
+Given a JSON object representing a struct from your types definition, you can convert it to XDR like the following:
+
+
+``` javascript
+const types = XDR.config((xdr) => {
+  xdr.typedef("Hash", xdr.opaque(2));
+
+  xdr.struct('Event', [
+    ["attendees", xdr.int()],
+    ["eventName", xdr.string(50)]
+  ])
+})
+
+let event = {
+  attendees: 5,
+  eventName: 'Lumenauts get together',
+  secretSpeakers: [ 'AAA=', 'AAE=' ],
+  speakers: [ 'Jed', 'Tom', 'Zac' ]
+}
+
+let xdrEvent = jsonToXDR.toXDR(types.Event, event)
+
+assert.ok(xdrEvent instanceof types.Event)
+```
