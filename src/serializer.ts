@@ -1,11 +1,11 @@
 import { Array, Enum, Hyper, Opaque, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
 
-interface StructConstructable {
+interface IStructConstructable {
   _fields: Array<[string, any]>;
   new(object): Struct;
 }
 
-interface UnionConstructor {
+interface IUnionConstructor {
   _switches: Map<any, any>;
   _defaultArm: any;
   new(object): Struct;
@@ -28,7 +28,7 @@ function serializeUnion(union: Union): any {
   const value = serialize(union.armType(), union.value());
 
   let arm = union.arm();
-  const unionConst = union.constructor as UnionConstructor;
+  const unionConst = union.constructor as IUnionConstructor;
 
   // TODO: Add helper function to union to know if current value is the default arm.
   if (!unionConst._switches.has(union.switch()) && !!unionConst._defaultArm) {
@@ -43,8 +43,8 @@ function serializeUnion(union: Union): any {
 }
 
 export function serializeStruct(struct: Struct): any {
-  const structConstructor: StructConstructable = struct.constructor as StructConstructable;
-  return structConstructor._fields.reduce(function(json, [name, type]) {
+  const structConstructor: IStructConstructable = struct.constructor as IStructConstructable;
+  return structConstructor._fields.reduce((json, [name, type]) => {
     json[name] = serialize(type, struct._attributes[name]);
     return json;
   }, {});
