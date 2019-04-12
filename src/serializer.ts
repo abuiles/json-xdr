@@ -1,7 +1,7 @@
 import { Array, Enum, Hyper, Opaque, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
 
 interface IStructConstructable {
-  _fields: Array<[string, any]>;
+  _fields: any[];
   new(object): Struct;
 }
 
