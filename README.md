@@ -262,3 +262,53 @@ Calling `#toJSON` will result in:
 ```
 
 Notice how `speakers` get serialized as a JavaScript `String`  while `secretSpeakers` which is an `Opaque`, get serialized as [base64, which is documented above](#opaque-and-varopaque).
+
+### Union
+
+Unions are serialized as a JavaScript object, the discriminant is
+store in the property `_type`. If there is an arm for the given
+discriminant, then a property with the arm's name is set in the object
+and its value should contain a type as defined in the XDR declaration.
+
+The following struct has two property of type union: `memo` and `meta`.
+
+``` javascript
+let event = new types.Event({
+  attendees: 5,
+  eventName: "Lumenauts get together",
+  secretSpeakers: [Buffer.from([0, 0]), Buffer.from([0, 1])],
+  speakers: ['Jed', 'Tom', 'Zac'],
+  price: new types.Price({
+    n: 2,
+    d: 1
+  }),
+  memo: types.Memo.memoText("foo"),
+  meta: types.TransactionMeta.paid(new types.Price({
+    n: 2,
+    d: 1
+  })),
+  counter: 2
+})
+```
+
+The code below shows the result after calling `toJSON(event)`, notice how the `memo` property has an object
+with the key `_type: "memoText"` and a property matching the arm declaration `text` with a string value of `foo`.
+
+Similarly, the property `meta` has an object with `_type: "paid"`, with the arm `price` which contains a Struct of type `Price`.
+
+``` javascript
+{
+  ...,
+  "memo": {
+    "_type": "memoText",
+    "text": "foo"
+  },
+  "meta": {
+    "_type": "paid",
+    "price": {
+      "n": 2,
+      "d": 1
+    }
+  }
+}
+```
