@@ -66,7 +66,7 @@ const types = XDR.config((xdr) => {
     ["meta", xdr.lookup("TransactionMeta")],
   ]);
 
-  xdr.struct("SerializeMe", [
+  xdr.struct("Envelope", [
     ["version", xdr.int()],
     ["fee", xdr.uint()],
     ["authorize", xdr.bool()],
@@ -89,7 +89,7 @@ const types = XDR.config((xdr) => {
 
 describe("#toJSON", () => {
   test("converts XDR to JSON", () => {
-    const SerializeMe = new types.SerializeMe({
+    const Envelope = new types.Envelope({
       version: -1,
       fee: 100,
       authorize: true,
@@ -115,7 +115,7 @@ describe("#toJSON", () => {
       })),
     });
 
-    expect(toJSON(types, SerializeMe)).toMatchSnapshot();
+    expect(toJSON(types, Envelope)).toMatchSnapshot();
   });
 
   test("union with struct arm", () => {
@@ -195,10 +195,10 @@ describe("#toXDR", () => {
       },
     };
 
-    const xdrStruct = toXDR(types.SerializeMe, payload);
-    const xdrStructCopy = types.SerializeMe.fromXDR(xdrStruct.toXDR());
+    const xdrStruct = toXDR(types.Envelope, payload);
+    const xdrStructCopy = types.Envelope.fromXDR(xdrStruct.toXDR());
 
-    expect(xdrStruct).toBeInstanceOf(types.SerializeMe);
+    expect(xdrStruct).toBeInstanceOf(types.Envelope);
     expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
   });
 
