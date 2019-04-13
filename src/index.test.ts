@@ -59,7 +59,7 @@ const types = XDR.config((xdr) => {
       price: xdr.lookup("Price"),
       rejected: xdr.lookup("RejectionCode"),
     },
-    defaultArm: xdr.string(28),
+    defaultArm: xdr.void(),
   });
 
   xdr.struct("Transaction", [
@@ -151,7 +151,7 @@ describe("#toJSON", () => {
 
   test("union default arm", () => {
     const transaction = new types.Transaction({
-      meta: types.TransactionMeta.pending("waiting for documentation"),
+      meta: types.TransactionMeta.pending(),
     });
 
     expect(toJSON(types, transaction)).toMatchSnapshot();
@@ -220,6 +220,20 @@ describe("#toXDR", () => {
     const xdrStructCopy = types.DeserializeMe.fromXDR(xdrStruct.toXDR())
 
     expect(xdrStruct).toBeInstanceOf(types.DeserializeMe)
+    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
+  });
+
+  test("toXdr union default arm", () => {
+    const payload = {
+      meta: {
+        _type: "pending"
+      },
+    };
+
+    const xdrStruct = toXDR(types.Transaction, payload);
+    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR())
+
+    expect(xdrStruct).toBeInstanceOf(types.Transaction)
     expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
   });
 });

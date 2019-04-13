@@ -1,14 +1,19 @@
 import { Array, Enum, Hyper, Opaque, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
 // TODO: Move this to a types file
-import { IStructConstructable } from "./serializer";
+import { IStructConstructable, IUnionConstructor } from "./serializer"; 
 
-function toUnion(xdrType: any, value): Union {
-  const discriminant = xdrType[value._type]();
-  const arm = discriminant._arm;
+function toUnion(unionConstructor: IUnionConstructor, value): Union {
+  const discriminant = unionConstructor[value._type]();
+  let arm = discriminant._arm;
+  let armType = discriminant._armType;
 
   // TODO: Handle void and default
+  if (!unionConstructor._switches.has(discriminant._switch) && unionConstructor._defaultArm) {
+    armType = unionConstructor._defaultArm;
+    arm = "default";
+  }
 
-  return xdrType[value._type](toXDR(discriminant._armType, value[arm]));
+  return unionConstructor[value._type](toXDR(armType, value[arm]));
 }
 
 export default function toXDR(xdrType: any, value: any): any {
