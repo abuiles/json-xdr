@@ -5,7 +5,7 @@ export interface IStructConstructable {
   new(object): Struct;
 }
 
-interface IUnionConstructor {
+export interface IUnionConstructor {
   _switches: Map<any, any>;
   _defaultArm: any;
   new(object): Struct;
