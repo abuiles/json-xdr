@@ -115,7 +115,7 @@ describe("#toJSON", () => {
       })),
     });
 
-    expect(toJSON(types, Envelope)).toMatchSnapshot();
+    expect(toJSON(Envelope)).toMatchSnapshot();
   });
 
   test("union with struct arm", () => {
@@ -126,7 +126,7 @@ describe("#toJSON", () => {
       })),
     });
 
-    expect(toJSON(types, transaction)).toMatchSnapshot();
+    expect(toJSON(transaction)).toMatchSnapshot();
   });
 
   test("union default arm", () => {
@@ -134,7 +134,7 @@ describe("#toJSON", () => {
       meta: types.TransactionMeta.pending(),
     });
 
-    expect(toJSON(types, transaction)).toMatchSnapshot();
+    expect(toJSON(transaction)).toMatchSnapshot();
   });
 
   test("option with value", () => {
@@ -142,7 +142,7 @@ describe("#toJSON", () => {
       meta: types.TransactionMeta.rejected(2),
     });
 
-    expect(toJSON(types, transaction)).toMatchSnapshot();
+    expect(toJSON(transaction)).toMatchSnapshot();
   });
 
   test("option without value", () => {
@@ -150,7 +150,7 @@ describe("#toJSON", () => {
       meta: types.TransactionMeta.rejected(),
     });
 
-    expect(toJSON(types, transaction)).toMatchSnapshot();
+    expect(toJSON(transaction)).toMatchSnapshot();
   });
 });
 
@@ -199,7 +199,7 @@ describe("#toXDR", () => {
     const xdrStructCopy = types.Envelope.fromXDR(xdrStruct.toXDR());
 
     expect(xdrStruct).toBeInstanceOf(types.Envelope);
-    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
+    expect(toJSON(xdrStructCopy)).toMatchObject(payload);
   });
 
   test("union with default arm", () => {
@@ -213,7 +213,7 @@ describe("#toXDR", () => {
     const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR());
 
     expect(xdrStruct).toBeInstanceOf(types.Transaction);
-    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
+    expect(toJSON(xdrStructCopy)).toMatchObject(payload);
   });
 
   test("option with value", () => {
@@ -228,7 +228,7 @@ describe("#toXDR", () => {
     const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR());
 
     expect(xdrStruct).toBeInstanceOf(types.Transaction);
-    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
+    expect(toJSON(xdrStructCopy)).toMatchObject(payload);
   });
 
   test("option without value", () => {
@@ -242,6 +242,6 @@ describe("#toXDR", () => {
     const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR());
 
     expect(xdrStruct).toBeInstanceOf(types.Transaction);
-    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
+    expect(toJSON(xdrStructCopy)).toMatchObject(payload);
   });
 });
