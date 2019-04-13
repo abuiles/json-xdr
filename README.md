@@ -312,3 +312,46 @@ Similarly, the property `meta` has an object with `_type: "paid"`, with the arm 
   }
 }
 ```
+
+#### Default Arms
+
+Given the following definition:
+
+``` javascript
+xdr.union("TransactionMeta", {
+  switchOn: xdr.lookup("TransactionMetaType"),
+  switches: [
+    ["none", xdr.void()],
+    ["paid", "price"]
+  ],
+  arms: {
+    price: xdr.lookup("Price")
+  },
+  defaultArm: xdr.string(3)
+});
+```
+
+If the union instance uses the default arm, it will be serialized like the following:
+
+``` javascript
+{
+  ...,
+  "meta": {
+    "_type": "pending",
+    "default": "foo"
+  }
+}
+```
+
+#### Void Arms
+
+If there is no arm for the discriminant, only the `_type` property will appear on the object.
+
+``` javascript
+{
+  ...,
+  "meta": {
+    "_type": "withVoidArm",
+  }
+}
+```
