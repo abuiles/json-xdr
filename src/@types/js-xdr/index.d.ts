@@ -29,6 +29,10 @@ declare module "js-xdr" {
 
   export class Struct {
     public _attributes: object;
+    public toXDR(): Buffer;
+  }
+
+  export class String {
   }
 
   export class Union {
