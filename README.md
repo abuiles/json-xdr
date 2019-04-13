@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/abuiles/json-xdr.svg?branch=master)](https://travis-ci.org/abuiles/json-xdr)
 
-This library augments [js-xdr](https://github.com/stellar/js-xdr) to let you convert XDR to JSON and JSON to XDR.
+This library extends [js-xdr](https://github.com/stellar/js-xdr) to let you convert XDR to JSON and JSON to XDR.
 
 ## Installation
 
@@ -14,80 +14,188 @@ npm install --save json-xdr
 
 ## Usage
 
-### Serializing from XDR to JSON
-
-Given a XDR representing a Transaction struct as defined in [examples/xdr.js](https://github.com/abuiles/json-xdr/blob/master/examples/xdr.js#L2440), you can convert it to JSON like the following:
-
-```javascript
-import jsonXDR from 'json-xdr'
-import types from './examples/xdr'
-
-> jsonXDR.toJSON(types, ATransactionStruct)
-{
-  sourceAccount: "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
-  fee: 100,
-  seqNum: 1234,
-  timeBounds: null,
-  memo: {
-    discriminant: "memoNone"
-  },
-  operations: [
-    {
-      sourceAccount: "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
-      body: {
-        discriminant: "createAccount",
-        arm: {
-          destination: "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
-          startingBalance: 200000000
-        }
-      }
-    }
-  ],
-  ext: {
-    discriminant: 0
-  }
-}
-```
-
-You can convert a JSON object to its XDR representation:
+The examples below will use the following XDR definition:
 
 ``` javascript
-import jsonXDR from 'json-xdr'
-import types from './examples/xdr'
+const XDR = require('js-xdr')
 
-let json = {
-  sourceAccount: "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
-  fee: 100,
-  seqNum: 1234,
-  timeBounds: null,
-  memo: {
-    discriminant: "memoNone"
-  },
-  operations: [
-    {
-      sourceAccount: "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
-      body: {
-        discriminant: "createAccount",
-        arm: {
-          destination: "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
-          startingBalance: 200000000
-        }
-      }
-    }
+const types = XDR.config((xdr) => {
+  xdr.typedef("Hash", xdr.opaque(2));
+  xdr.typedef('Int32', xdr.int());
+
+  xdr.struct("Price", [
+    ["n", xdr.lookup("Int32")],
+    ["d", xdr.lookup("Int32")],
+  ]);
+
+  xdr.enum("MemoType", {
+      memoNone: 0,
+      memoText: 1,
+      memoId: 2,
+      memoHash: 3,
+      memoReturn: 4,
+  });
+
+  xdr.union("Memo", {
+    switchOn: xdr.lookup("MemoType"),
+    switchName: "type",
+    switches: [
+      ["memoNone", xdr.void()],
+      ["memoText", "text"],
+      ["memoId", "id"]
+    ],
+    arms: {
+      text: xdr.string(28),
+      id: xdr.lookup("Int32")
+    },
+  });
+
+  xdr.typedef('CounterInt', xdr.option(xdr.int()));
+
+  xdr.struct('Event', [
+    ["attendees", xdr.int()],
+    ["eventName", xdr.string(50)],
+    ["secretSpeakers", xdr.array(xdr.lookup("Hash"), 2)],
+    ["speakers", xdr.varArray(xdr.string())],
+    ["price", xdr.lookup("Price")],
+    ["memo", xdr.lookup("Memo")],
+    ['meta', xdr.lookup('TransactionMeta')],
+    ['counter', xdr.lookup("CounterInt")]
+  ])
+
+  xdr.enum("TransactionMetaType", {
+    none: 0,
+    paid: 1
+  });
+
+  xdr.union("TransactionMeta", {
+    switchOn: xdr.lookup("TransactionMetaType"),
+    switches: [
+      ["none", xdr.void()],
+      ["paid", "price"]
+    ],
+    arms: {
+      price: xdr.lookup("Price")
+    },
+    defaultArm: xdr.void()
+  });
+})
+```
+
+### Serializing from XDR to JSON
+
+
+You can convert an XDR struct to JSON using the function `toJSON`.
+
+
+``` javascript
+import { toJSON } from 'json-xdr';
+
+let event = new types.Event({
+  attendees: 5,
+  eventName: "Lumenauts get together",
+  secretSpeakers: [Buffer.from([0, 0]), Buffer.from([0, 1])],
+  speakers: ['Jed', 'Tom', 'Zac'],
+  price: new types.Price({
+    n: 2,
+    d: 1
+  }),
+  memo: types.Memo.memoText("foo"),
+  meta: types.TransactionMeta.paid(new types.Price({
+    n: 2,
+    d: 1
+  })),
+  counter: 2
+})
+
+let payload = toJSON(event);
+
+console.log(payload)
+
+// Output
+// {
+//   "attendees": 5,
+//   "eventName": "Lumenauts get together",
+//   "secretSpeakers": [
+//     "AAA=",
+//     "AAE="
+//   ],
+//   "speakers": [
+//     "Jed",
+//     "Tom",
+//     "Zac"
+//   ],
+//   "price": {
+//     "n": 2,
+//     "d": 1
+//   },
+//   "memo": {
+//     "_type": "memoText",
+//     "text": "foo"
+//   },
+//   "meta": {
+//     "_type": "paid",
+//     "price": {
+//       "n": 2,
+//       "d": 1
+//     }
+//   },
+//   "counter": 2
+// }
+```
+
+### Serializing from JSON to XDR
+
+Given a JSON object representing a struct from your types definition, you can convert it to XDR using the function `toXDR`.
+
+``` javascript
+import { toJSON } from 'json-xdr';
+
+let payload = {
+  "attendees": 5,
+  "eventName": "Lumenauts get together",
+  "secretSpeakers": [
+    "AAA=",
+    "AAE="
   ],
-  ext: {
-    discriminant: 0
-  }
+  "speakers": [
+    "Jed",
+    "Tom",
+    "Zac"
+  ],
+  "price": {
+    "n": 2,
+    "d": 1
+  },
+  "memo": {
+    "_type": "memoText",
+    "text": "foo"
+  },
+  "meta": {
+    "_type": "paid",
+    "price": {
+      "n": 2,
+      "d": 1
+    }
+  },
+  "counter": 2
 }
 
-let aXDRTransaction = jsonXDR.toXDR(types, json)
+let event = toJSON(types.Event, event)
+
+assert.ok(xdrEvent instanceof types.Event)
 ```
 
 ## Serialization format
 
+XDR has some types that map to native types in JavaScript, however
+there are some types which don't have an equivalent
+representation. For those types we do the serialization and
+deserialization using the following rules.
+
 ### Opaque and VarOpaque
 
-Opaque data will be serialized as a `base64` encoded string.
+Opaque and Variable Opaque data are represented in `js-xdr` using a binary data buffer. Buffers are serializer as a `base64` encoded string.
 
 For the following definition:
 
@@ -107,11 +215,7 @@ let withOpaque = new types.withOpaque({
 
 Calling `#toJSON` will result in:
 
-
 ``` javascript
-import jsonXDR from 'json-xdr'
-
-> jsonXDR.toJSON(types, withOpaque)
 {
   opaque: 'AAAB',
   varOpaque: 'AAE='
@@ -149,9 +253,6 @@ let event = new types.Event({
 Calling `#toJSON` will result in:
 
 ``` javascript
-import jsonXDR from 'json-xdr'
-
-> jsonXDR.toJSON(types, event)
 {
   attendees: 5,
   eventName: 'Lumenauts get together',
@@ -160,31 +261,4 @@ import jsonXDR from 'json-xdr'
 }
 ```
 
-Notice how `speakers` get serialized as a JavaScript `String`  while `secretSpeakers` which is an `Opaque`, gets serialized as [documented above](#opaque-and-varopaque).
-
-### Serializing from JSON to XDR
-
-Given a JSON object representing a struct from your types definition, you can convert it to XDR like the following:
-
-
-``` javascript
-const types = XDR.config((xdr) => {
-  xdr.typedef("Hash", xdr.opaque(2));
-
-  xdr.struct('Event', [
-    ["attendees", xdr.int()],
-    ["eventName", xdr.string(50)]
-  ])
-})
-
-let event = {
-  attendees: 5,
-  eventName: 'Lumenauts get together',
-  secretSpeakers: [ 'AAA=', 'AAE=' ],
-  speakers: [ 'Jed', 'Tom', 'Zac' ]
-}
-
-let xdrEvent = jsonToXDR.toXDR(types.Event, event)
-
-assert.ok(xdrEvent instanceof types.Event)
-```
+Notice how `speakers` get serialized as a JavaScript `String`  while `secretSpeakers` which is an `Opaque`, get serialized as [base64, which is documented above](#opaque-and-varopaque).
