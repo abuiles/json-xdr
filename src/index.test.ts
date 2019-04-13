@@ -66,7 +66,7 @@ const types = XDR.config((xdr) => {
     ["meta", xdr.lookup("TransactionMeta")],
   ]);
 
-  xdr.struct("aStruct", [
+  xdr.struct("SerializeMe", [
     ["version", xdr.int()],
     ["fee", xdr.uint()],
     ["authorize", xdr.bool()],
@@ -89,7 +89,7 @@ const types = XDR.config((xdr) => {
 
 describe("#toJSON", () => {
   test("converts XDR to JSON", () => {
-    const aStruct = new types.aStruct({
+    const SerializeMe = new types.SerializeMe({
       version: -1,
       fee: 100,
       authorize: true,
@@ -115,7 +115,7 @@ describe("#toJSON", () => {
       })),
     });
 
-    expect(toJSON(types, aStruct)).toMatchSnapshot();
+    expect(toJSON(types, SerializeMe)).toMatchSnapshot();
   });
 
   test("union with struct arm", () => {
