@@ -6,7 +6,9 @@ function toUnion(xdrType: any, value): Union {
   const discriminant = xdrType[value._type]();
   const arm = discriminant._arm;
 
-  return xdrType[value._type](value[arm]);
+  // TODO: Handle void and default
+
+  return xdrType[value._type](toXDR(discriminant._armType, value[arm]));
 }
 
 export default function toXDR(xdrType: any, value: any): any {
