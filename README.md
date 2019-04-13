@@ -188,10 +188,10 @@ assert.ok(xdrEvent instanceof types.Event)
 
 ## Serialization format
 
-XDR has some types that map to native types in JavaScript, however
-there are some types which don't have an equivalent
-representation. For those types we do the serialization and
-deserialization using the following rules.
+JavaScript native types are used when possible, for example, `String`,
+`Integer`, `Array` and `null`. However there are some types which
+don't have an equivalent representation. For those types the
+serialization and deserialization is done using the following rules.
 
 ### Opaque and VarOpaque
 
@@ -355,3 +355,7 @@ If there is no arm for the discriminant, only the `_type` property will appear o
   }
 }
 ```
+
+## Examples
+
+You can find more examples in the test [here](https://github.com/abuiles/json-xdr/blob/docs-and-cleanups/src/index.test.ts#L90).
