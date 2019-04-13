@@ -1,4 +1,4 @@
-import { Array, Enum, Hyper, Opaque, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
+import { Array, Enum, Hyper, Opaque, String, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
 
 export interface IStructConstructable {
   _fields: any[];
@@ -42,6 +42,14 @@ function serializeUnion(union: Union): any {
   return serialized;
 }
 
+function serializeString(value: string | Buffer): any {
+  if (typeof value === "string") {
+    return value;
+  } else {
+    return value.toString("utf8");
+  }
+}
+
 export function serializeStruct(struct: Struct): any {
   const structConstructor: IStructConstructable = struct.constructor as IStructConstructable;
   return structConstructor._fields.reduce((json, [name, type]) => {
@@ -60,6 +68,8 @@ export default function serialize(xdrType: any, value: any): any {
     return value.toString("base64");
   } else if (xdrType instanceof Array || xdrType instanceof VarArray) {
     return value.map((val) => serialize(xdrType._childType, val));
+  } else if (xdrType instanceof String) {
+    return serializeString(value);
   } else if (value instanceof Struct) {
     return serializeStruct(value);
   } else if (value instanceof Union) {
