@@ -66,6 +66,16 @@ const types = XDR.config((xdr) => {
     ["meta", xdr.lookup("TransactionMeta")],
   ]);
 
+  xdr.struct("DeserializeMe", [
+    ["version", xdr.int()],
+    ["fee", xdr.uint()],
+    ["authorize", xdr.bool()],
+    ["msg", xdr.string(11)],
+    ["lat", xdr.float()],
+    ["lon", xdr.double()],
+    ["theVoid", xdr.void()]
+  ]);
+
   xdr.struct("SerializeMe", [
     ["version", xdr.int()],
     ["fee", xdr.uint()],
@@ -157,14 +167,20 @@ describe("#toJSON", () => {
 
 describe("#toXDR", () => {
   test("converts JSON to XDR", () => {
-    const json = {
-      n: 2,
-      d: 1
+    const payload = {
+      version: -1,
+      fee: 100,
+      authorize: true,
+      msg: "hello world",
+      lat: 37.76453399658203,
+      lon: -122.421069,
+      theVoid: undefined,
     };
 
-    const xdr = toXDR(types.Price, json);
+    const xdrStruct = toXDR(types.DeserializeMe, payload);
+    const xdrStructCopy = types.DeserializeMe.fromXDR(xdrStruct.toXDR())
 
-    expect(xdr).toBeInstanceOf(types.Price)
-    expect(toJSON(types, xdr)).toMatchObject(json)
+    expect(xdrStruct).toBeInstanceOf(types.DeserializeMe)
+    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
   });
 });
