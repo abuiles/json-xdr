@@ -2,7 +2,7 @@ import { Struct } from "js-xdr";
 import { deserializeStruct } from "./deserializer";
 import { IStructConstructable, serializeStruct } from "./serializer";
 
-export function toJSON(types: object, struct: Struct): any {
+export function toJSON(struct: Struct): any {
   return serializeStruct(struct);
 }
 
