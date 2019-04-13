@@ -78,7 +78,9 @@ const types = XDR.config((xdr) => {
     ["signedSequence", xdr.hyper()],
     ["color", xdr.lookup("Color")],
     ["opaque", xdr.opaque(3)],
-    ["varOpaque", xdr.varOpaque(2)]
+    ["varOpaque", xdr.varOpaque(2)],
+    ["skipList", xdr.array(xdr.lookup("Hash"), 2)],
+    ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)]
   ]);
 
   xdr.struct("SerializeMe", [
@@ -184,7 +186,16 @@ describe("#toXDR", () => {
       signedSequence: "-1059",
       color: "green",
       opaque: "AAAB",
-      varOpaque: "AAE="
+      varOpaque: "AAE=",
+      skipList: [
+        "AAA=",
+        "AAE="
+      ],
+      varSkipList: [
+        "AAA=",
+        "AAE=",
+        "AQE=",
+      ]
     };
 
     const xdrStruct = toXDR(types.DeserializeMe, payload);
