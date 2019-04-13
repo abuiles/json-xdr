@@ -80,7 +80,8 @@ const types = XDR.config((xdr) => {
     ["opaque", xdr.opaque(3)],
     ["varOpaque", xdr.varOpaque(2)],
     ["skipList", xdr.array(xdr.lookup("Hash"), 2)],
-    ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)]
+    ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)],
+    ["price", xdr.lookup("Price")]
   ]);
 
   xdr.struct("SerializeMe", [
@@ -195,7 +196,11 @@ describe("#toXDR", () => {
         "AAA=",
         "AAE=",
         "AQE=",
-      ]
+      ],
+      price: {
+        "d": 1,
+        "n": 2,
+      }
     };
 
     const xdrStruct = toXDR(types.DeserializeMe, payload);
