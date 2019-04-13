@@ -62,7 +62,6 @@ exports[`#toJSON union default arm 1`] = `
 Object {
   "meta": Object {
     "_type": "pending",
-    "default": "waiting for documentation",
   },
 }
 `;
