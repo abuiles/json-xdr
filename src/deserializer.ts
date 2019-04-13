@@ -1,6 +1,13 @@
-import { Array, Enum, Hyper, Opaque, Struct, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
+import { Array, Enum, Hyper, Opaque, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
 // TODO: Move this to a types file
 import { IStructConstructable } from "./serializer";
+
+function toUnion(xdrType: any, value): Union {
+  const discriminant = xdrType[value._type]();
+  const arm = discriminant._arm;
+
+  return xdrType[value._type](value[arm]);
+}
 
 export default function toXDR(xdrType: any, value: any): any {
   if (xdrType === Hyper || xdrType === UnsignedHyper) {
@@ -16,6 +23,9 @@ export default function toXDR(xdrType: any, value: any): any {
     return value.map((val) => Buffer.from(val, "base64"));
   } else if (Object.getPrototypeOf(xdrType) === Struct) {
     return deserializeStruct(xdrType, value);
+  } else if (Object.getPrototypeOf(xdrType) === Union) {
+    return toUnion(xdrType, value);
+
   } else {
     return value;
   }

@@ -81,7 +81,8 @@ const types = XDR.config((xdr) => {
     ["varOpaque", xdr.varOpaque(2)],
     ["skipList", xdr.array(xdr.lookup("Hash"), 2)],
     ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)],
-    ["price", xdr.lookup("Price")]
+    ["price", xdr.lookup("Price")],
+    ["memo", xdr.lookup("Memo")],
   ]);
 
   xdr.struct("SerializeMe", [
@@ -200,6 +201,10 @@ describe("#toXDR", () => {
       price: {
         "d": 1,
         "n": 2,
+      },
+      memo: {
+        "_type": "memoText",
+        "text": "hola",
       }
     };
 
