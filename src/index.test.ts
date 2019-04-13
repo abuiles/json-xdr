@@ -73,7 +73,9 @@ const types = XDR.config((xdr) => {
     ["msg", xdr.string(11)],
     ["lat", xdr.float()],
     ["lon", xdr.double()],
-    ["theVoid", xdr.void()]
+    ["theVoid", xdr.void()],
+    ["offerId", xdr.uhyper()],
+    ["signedSequence", xdr.hyper()],
   ]);
 
   xdr.struct("SerializeMe", [
@@ -175,6 +177,8 @@ describe("#toXDR", () => {
       lat: 37.76453399658203,
       lon: -122.421069,
       theVoid: undefined,
+      offerId: "12345",
+      signedSequence: "-1059"
     };
 
     const xdrStruct = toXDR(types.DeserializeMe, payload);
