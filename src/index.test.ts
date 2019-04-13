@@ -66,26 +66,6 @@ const types = XDR.config((xdr) => {
     ["meta", xdr.lookup("TransactionMeta")],
   ]);
 
-  xdr.struct("DeserializeMe", [
-    ["version", xdr.int()],
-    ["fee", xdr.uint()],
-    ["authorize", xdr.bool()],
-    ["msg", xdr.string(11)],
-    ["lat", xdr.float()],
-    ["lon", xdr.double()],
-    ["theVoid", xdr.void()],
-    ["offerId", xdr.uhyper()],
-    ["signedSequence", xdr.hyper()],
-    ["color", xdr.lookup("Color")],
-    ["opaque", xdr.opaque(3)],
-    ["varOpaque", xdr.varOpaque(2)],
-    ["skipList", xdr.array(xdr.lookup("Hash"), 2)],
-    ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)],
-    ["price", xdr.lookup("Price")],
-    ["memo", xdr.lookup("Memo")],
-    ["meta", xdr.lookup("TransactionMeta")],
-  ]);
-
   xdr.struct("SerializeMe", [
     ["version", xdr.int()],
     ["fee", xdr.uint()],
@@ -215,10 +195,10 @@ describe("#toXDR", () => {
       },
     };
 
-    const xdrStruct = toXDR(types.DeserializeMe, payload);
-    const xdrStructCopy = types.DeserializeMe.fromXDR(xdrStruct.toXDR());
+    const xdrStruct = toXDR(types.SerializeMe, payload);
+    const xdrStructCopy = types.SerializeMe.fromXDR(xdrStruct.toXDR());
 
-    expect(xdrStruct).toBeInstanceOf(types.DeserializeMe);
+    expect(xdrStruct).toBeInstanceOf(types.SerializeMe);
     expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
   });
 
