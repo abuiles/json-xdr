@@ -19,6 +19,7 @@ declare module "js-xdr" {
   export class Enum {
     public name: string;
     public value: number;
+    public fromName(string): Enum;
   }
 
   export class Hyper extends Long {

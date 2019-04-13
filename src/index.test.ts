@@ -76,6 +76,7 @@ const types = XDR.config((xdr) => {
     ["theVoid", xdr.void()],
     ["offerId", xdr.uhyper()],
     ["signedSequence", xdr.hyper()],
+    ["color", xdr.lookup("Color")]
   ]);
 
   xdr.struct("SerializeMe", [
@@ -178,7 +179,8 @@ describe("#toXDR", () => {
       lon: -122.421069,
       theVoid: undefined,
       offerId: "12345",
-      signedSequence: "-1059"
+      signedSequence: "-1059",
+      color: "green"
     };
 
     const xdrStruct = toXDR(types.DeserializeMe, payload);

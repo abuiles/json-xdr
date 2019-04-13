@@ -1,20 +1,13 @@
-import { Hyper, Struct, UnsignedHyper } from "js-xdr";
+import { Enum, Hyper, Struct, UnsignedHyper } from "js-xdr";
 // TODO: Move this to a types file
 import { IStructConstructable } from "./serializer";
 
-function toHyper(value: string): Hyper {
-  return Hyper.fromString(value);
-}
-
-function toUnsignedHyper(value: string): UnsignedHyper {
-  return UnsignedHyper.fromString(value);
-}
-
 export default function toXDR(xdrType: any, value: any): any {
-  if (xdrType === Hyper) {
-    return toHyper(value);
-  } else if (xdrType === UnsignedHyper) {
-    return toUnsignedHyper(value);
+  if (xdrType === Hyper || xdrType === UnsignedHyper) {
+    return xdrType.fromString(value);
+  } else if (Object.getPrototypeOf(xdrType) === Enum) {
+    // TODO: Make it easier in js-xdr to check for instances of ChildEnum
+    return xdrType.fromName(value);
   } else {
     return value;
   }
