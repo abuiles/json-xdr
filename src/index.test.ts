@@ -223,11 +223,40 @@ describe("#toXDR", () => {
     expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
   });
 
-  test("toXdr union default arm", () => {
+  test("union with default arm", () => {
     const payload = {
       meta: {
         _type: "pending"
       },
+    };
+
+    const xdrStruct = toXDR(types.Transaction, payload);
+    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR())
+
+    expect(xdrStruct).toBeInstanceOf(types.Transaction)
+    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
+  });
+
+  test("option with value", () => {
+    const payload = {
+      meta:  {
+        _type: "rejected",
+        rejected: 2
+      }
+    };
+
+    const xdrStruct = toXDR(types.Transaction, payload);
+    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR())
+
+    expect(xdrStruct).toBeInstanceOf(types.Transaction)
+    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
+  });
+
+  test("option without value", () => {
+    const payload = {
+      meta:  {
+        _type: "rejected"
+      }
     };
 
     const xdrStruct = toXDR(types.Transaction, payload);
