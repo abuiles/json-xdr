@@ -83,7 +83,7 @@ const types = XDR.config((xdr) => {
     ["varSkipList", xdr.varArray(xdr.lookup("Hash"), 2147483647)],
     ["price", xdr.lookup("Price")],
     ["memo", xdr.lookup("Memo")],
-    ["meta", xdr.lookup("TransactionMeta")]
+    ["meta", xdr.lookup("TransactionMeta")],
   ]);
 
   xdr.struct("SerializeMe", [
@@ -174,7 +174,6 @@ describe("#toJSON", () => {
   });
 });
 
-
 describe("#toXDR", () => {
   test("converts JSON to XDR", () => {
     const payload = {
@@ -192,7 +191,7 @@ describe("#toXDR", () => {
       varOpaque: "AAE=",
       skipList: [
         "AAA=",
-        "AAE="
+        "AAE=",
       ],
       varSkipList: [
         "AAA=",
@@ -200,69 +199,69 @@ describe("#toXDR", () => {
         "AQE=",
       ],
       price: {
-        "d": 1,
-        "n": 2,
+        d: 1,
+        n: 2,
       },
       memo: {
-        "_type": "memoText",
-        "text": "hola",
+        _type: "memoText",
+        text: "hola",
       },
       meta: {
-        "_type": "paid",
-        "price": {
-          "d": 1,
-          "n": 2,
-        }
+        _type: "paid",
+        price: {
+          d: 1,
+          n: 2,
+        },
       },
     };
 
     const xdrStruct = toXDR(types.DeserializeMe, payload);
-    const xdrStructCopy = types.DeserializeMe.fromXDR(xdrStruct.toXDR())
+    const xdrStructCopy = types.DeserializeMe.fromXDR(xdrStruct.toXDR());
 
-    expect(xdrStruct).toBeInstanceOf(types.DeserializeMe)
-    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
+    expect(xdrStruct).toBeInstanceOf(types.DeserializeMe);
+    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
   });
 
   test("union with default arm", () => {
     const payload = {
       meta: {
-        _type: "pending"
+        _type: "pending",
       },
     };
 
     const xdrStruct = toXDR(types.Transaction, payload);
-    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR())
+    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR());
 
-    expect(xdrStruct).toBeInstanceOf(types.Transaction)
-    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
+    expect(xdrStruct).toBeInstanceOf(types.Transaction);
+    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
   });
 
   test("option with value", () => {
     const payload = {
       meta:  {
         _type: "rejected",
-        rejected: 2
-      }
+        rejected: 2,
+      },
     };
 
     const xdrStruct = toXDR(types.Transaction, payload);
-    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR())
+    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR());
 
-    expect(xdrStruct).toBeInstanceOf(types.Transaction)
-    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
+    expect(xdrStruct).toBeInstanceOf(types.Transaction);
+    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
   });
 
   test("option without value", () => {
     const payload = {
       meta:  {
-        _type: "rejected"
-      }
+        _type: "rejected",
+      },
     };
 
     const xdrStruct = toXDR(types.Transaction, payload);
-    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR())
+    const xdrStructCopy = types.Transaction.fromXDR(xdrStruct.toXDR());
 
-    expect(xdrStruct).toBeInstanceOf(types.Transaction)
-    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload)
+    expect(xdrStruct).toBeInstanceOf(types.Transaction);
+    expect(toJSON(types, xdrStructCopy)).toMatchObject(payload);
   });
 });

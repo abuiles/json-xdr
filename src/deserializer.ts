@@ -1,6 +1,6 @@
 import { Array, Enum, Hyper, Opaque, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
 // TODO: Move this to a types file
-import { IStructConstructable, IUnionConstructor } from "./serializer"; 
+import { IStructConstructable, IUnionConstructor } from "./serializer";
 
 function toUnion(unionConstructor: IUnionConstructor, value): Union {
   const discriminant = unionConstructor[value._type]();
