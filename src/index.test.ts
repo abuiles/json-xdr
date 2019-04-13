@@ -76,7 +76,9 @@ const types = XDR.config((xdr) => {
     ["theVoid", xdr.void()],
     ["offerId", xdr.uhyper()],
     ["signedSequence", xdr.hyper()],
-    ["color", xdr.lookup("Color")]
+    ["color", xdr.lookup("Color")],
+    ["opaque", xdr.opaque(3)],
+    ["varOpaque", xdr.varOpaque(2)]
   ]);
 
   xdr.struct("SerializeMe", [
@@ -180,7 +182,9 @@ describe("#toXDR", () => {
       theVoid: undefined,
       offerId: "12345",
       signedSequence: "-1059",
-      color: "green"
+      color: "green",
+      opaque: "AAAB",
+      varOpaque: "AAE="
     };
 
     const xdrStruct = toXDR(types.DeserializeMe, payload);
