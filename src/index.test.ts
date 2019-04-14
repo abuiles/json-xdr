@@ -49,6 +49,20 @@ const types = XDR.config((xdr) => {
     },
   });
 
+  xdr.union("TransactionResultExt", {
+    switchOn: xdr.int(),
+    switchName: "v",
+    switches: [
+      [0, xdr.void()],
+    ],
+    arms: {
+    },
+  });
+
+  xdr.struct("TransactionResult", [
+    ["ext", xdr.lookup("TransactionResultExt")]
+  ]);
+
   xdr.typedef("RejectionCode", xdr.option(xdr.int()));
 
   xdr.union("TransactionMeta", {
@@ -66,7 +80,7 @@ const types = XDR.config((xdr) => {
   });
 
   xdr.struct("Transaction", [
-    ["meta", xdr.lookup("TransactionMeta")],
+    ["meta", xdr.lookup("TransactionMeta")]
   ]);
 
   xdr.struct("Envelope", [
@@ -140,6 +154,14 @@ describe("#toJSON", () => {
     expect(toJSON(transaction)).toMatchSnapshot();
   });
 
+  test("union with int discriminant and int arm", () => {
+    const transaction = new types.TransactionResult({
+      ext: new types.TransactionResultExt(0)
+    });
+
+    expect(toJSON(transaction)).toMatchSnapshot();
+  })
+
   test("option with value", () => {
     const transaction = new types.Transaction({
       meta: types.TransactionMeta.rejected(2),
@@ -149,8 +171,8 @@ describe("#toJSON", () => {
   });
 
   test("option without value", () => {
-    const transaction = new types.Transaction({
-      meta: types.TransactionMeta.rejected(),
+    const transaction = new types.TransactionResult({
+      ext: new types.TransactionResultExt(0)
     });
 
     expect(toJSON(transaction)).toMatchSnapshot();
