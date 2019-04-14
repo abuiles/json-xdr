@@ -149,7 +149,7 @@ console.log(payload)
 Given a JSON object representing a struct from your types definition, you can convert it to XDR using the function `toXDR`.
 
 ``` javascript
-import { toJSON } from 'json-xdr';
+import { toXDR } from 'json-xdr';
 
 let payload = {
   "attendees": 5,
@@ -181,7 +181,7 @@ let payload = {
   "counter": 2
 }
 
-let event = toJSON(types.Event, event)
+let event = toXDR(types.Event, payload)
 
 assert.ok(xdrEvent instanceof types.Event)
 ```
