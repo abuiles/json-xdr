@@ -1,4 +1,4 @@
-import { Array, Enum, Hyper, Opaque, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
+import { Array, Enum, Hyper, Opaque, Option, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
 // TODO: Move this to a types file
 import { IStructConstructable, IUnionConstructor } from "./serializer";
 
@@ -27,6 +27,8 @@ export default function toXDR(xdrType: any, value: any): any {
     return Buffer.from(value, "base64");
   } else if (xdrType instanceof Array || xdrType instanceof VarArray) {
     return value.map((val) => toXDR(xdrType._childType, val));
+  } else if (xdrType instanceof Option && value) {
+    return toXDR(xdrType._childType, value);
   } else if (Object.getPrototypeOf(xdrType) === Struct) {
     return deserializeStruct(xdrType, value);
   } else if (Object.getPrototypeOf(xdrType) === Union) {

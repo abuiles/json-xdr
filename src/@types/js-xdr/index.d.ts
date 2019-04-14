@@ -53,4 +53,8 @@ declare module "js-xdr" {
 
   export class VarOpaque {
   }
+
+  export class Option {
+    public _childType: any;
+  }
 }

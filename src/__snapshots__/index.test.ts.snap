@@ -85,3 +85,20 @@ Object {
   },
 }
 `;
+
+exports[`#toXDR regression: SetOptionsOp sample 1`] = `
+Object {
+  "clearFlags": undefined,
+  "highThreshold": undefined,
+  "homeDomain": undefined,
+  "inflationDest": Object {
+    "_type": "publicKeyTypeEd25519",
+    "ed25519": "H6Ue1GOPj6Hb/ROPyIFCJpQPMujihEIvJSfK0UfMDIg=",
+  },
+  "lowThreshold": undefined,
+  "masterWeight": undefined,
+  "medThreshold": undefined,
+  "setFlags": undefined,
+  "signer": undefined,
+}
+`;
