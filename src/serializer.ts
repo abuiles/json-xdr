@@ -20,10 +20,15 @@ function serializeEnum({ name }: Enum): string {
 }
 
 function serializeUnion(union: Union): any {
+  const serialized = {};
 
-  const serialized = {
-    _type: union.switch().name,
-  };
+  if (union.switch() instanceof Enum) {
+    serialized["_type"] =  union.switch().name
+  } else {
+    serialized["_type"] =  union.switch()
+  }
+
+  debugger
 
   const value = serialize(union.armType(), union.value());
 

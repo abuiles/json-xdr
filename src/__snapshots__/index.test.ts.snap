@@ -69,7 +69,7 @@ Object {
 exports[`#toJSON union with int discriminant and int arm 1`] = `
 Object {
   "ext": Object {
-    "_type": undefined,
+    "_type": 0,
   },
 }
 `;
