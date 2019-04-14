@@ -18,28 +18,28 @@ describe("Integration", () => {
 
       let xdrCopy = toXDR(StellarSdk.xdr.TransactionResult, json);
 
-      expect(transaction.result_xdr).toEqual(xdrCopy.toXDR().toString("base64"));
+      expect(xdrCopy.toXDR().toString("base64")).toEqual(transaction.result_xdr);
 
       // Read ResultMetaXDR, convert to JSON and back to XDR.
       xdr = StellarSdk.xdr.TransactionMeta.fromXDR(transaction.result_meta_xdr, "base64");
       json = toJSON(xdr);
 
       xdrCopy = toXDR(StellarSdk.xdr.TransactionMeta, json);
-      expect(transaction.result_meta_xdr).toEqual(xdrCopy.toXDR().toString("base64"));
+      expect(xdrCopy.toXDR().toString("base64")).toEqual(transaction.result_meta_xdr);
 
       // Read TransactionEnvelope, convert to JSON and back to XDR.
       xdr = StellarSdk.xdr.TransactionEnvelope.fromXDR(transaction.envelope_xdr, "base64");
       json = toJSON(xdr);
 
       xdrCopy = toXDR(StellarSdk.xdr.TransactionEnvelope, json);
-      expect(transaction.envelope_xdr).toEqual(xdrCopy.toXDR().toString("base64"));
+      expect(xdrCopy.toXDR().toString("base64")).toEqual(transaction.envelope_xdr);
 
       // Read LedgerEntryChanges, convert to JSON and back to XDR.
       xdr = StellarSdk.xdr.LedgerEntryChanges.fromXDR(transaction.fee_meta_xdr, "base64");
       json = toJSON(xdr);
 
       xdrCopy = toXDR(StellarSdk.xdr.LedgerEntryChanges, json);
-      expect(transaction.fee_meta_xdr).toEqual(StellarSdk.xdr.LedgerEntryChanges.toXDR(xdrCopy).toString("base64"));
+      expect(StellarSdk.xdr.LedgerEntryChanges.toXDR(xdrCopy).toString("base64")).toEqual(transaction.fee_meta_xdr);
     };
 
     let transactions = await server.transactions().order("desc").limit(200).call();
