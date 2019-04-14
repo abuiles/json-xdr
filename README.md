@@ -358,4 +358,4 @@ If there is no arm for the discriminant, only the `_type` property will appear o
 
 ## Examples
 
-You can find more examples in the test [here](https://github.com/abuiles/json-xdr/blob/docs-and-cleanups/src/index.test.ts#L90).
+You can find more examples in the test [here](https://github.com/abuiles/json-xdr/blob/master/src/index.test.ts#L90).
