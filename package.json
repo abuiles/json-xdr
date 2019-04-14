@@ -1,12 +1,11 @@
 {
   "name": "json-xdr",
   "version": "0.0.3",
-  "description": "",
+  "description": "Easily convert between XDR and JSON.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/abuiles/json-xdr",
   "author": "Adolfo Builes <builes.adolfo@gmail.com>",
-  "description": "Easily convert between XDR and JSON.",
   "license": "MIT",
   "scripts": {
     "test": "jest",
@@ -23,5 +22,8 @@
     "ts-jest": "^24.0.1",
     "tslint": "^5.15.0",
     "typescript": "^3.4.1"
+  },
+  "dependencies": {
+    "stellar-sdk": "^0.15.0"
   }
 }
