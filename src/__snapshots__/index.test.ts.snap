@@ -86,6 +86,93 @@ Object {
 }
 `;
 
+exports[`#toXDR regression: LedgerEntryChanges 1`] = `
+Array [
+  Object {
+    "_type": "ledgerEntryState",
+    "state": Object {
+      "data": Object {
+        "_type": "account",
+        "account": Object {
+          "accountId": Object {
+            "_type": "publicKeyTypeEd25519",
+            "ed25519": "ZUrFvSavD4V0AqwO0pCP2nBFoPHyoKEYtFLKPJbdmDs=",
+          },
+          "balance": "29684846895",
+          "ext": Object {
+            "_type": 1,
+            "v1": Object {
+              "ext": Object {
+                "_type": 0,
+              },
+              "liabilities": Object {
+                "buying": "236580880832",
+                "selling": "29184848488",
+              },
+            },
+          },
+          "flags": 0,
+          "homeDomain": "",
+          "inflationDest": Object {
+            "_type": "publicKeyTypeEd25519",
+            "ed25519": "hD8BLsZFQEF33rKS6YopQUT3b6iLBG4nspe68/DBNBY=",
+          },
+          "numSubEntries": 9,
+          "seqNum": "70985857964185117",
+          "signers": Array [],
+          "thresholds": "AQAAAA==",
+        },
+      },
+      "ext": Object {
+        "_type": 0,
+      },
+      "lastModifiedLedgerSeq": 23416963,
+    },
+  },
+  Object {
+    "_type": "ledgerEntryUpdated",
+    "updated": Object {
+      "data": Object {
+        "_type": "account",
+        "account": Object {
+          "accountId": Object {
+            "_type": "publicKeyTypeEd25519",
+            "ed25519": "ZUrFvSavD4V0AqwO0pCP2nBFoPHyoKEYtFLKPJbdmDs=",
+          },
+          "balance": "29684845295",
+          "ext": Object {
+            "_type": 1,
+            "v1": Object {
+              "ext": Object {
+                "_type": 0,
+              },
+              "liabilities": Object {
+                "buying": "236580880832",
+                "selling": "29184848488",
+              },
+            },
+          },
+          "flags": 0,
+          "homeDomain": "",
+          "inflationDest": Object {
+            "_type": "publicKeyTypeEd25519",
+            "ed25519": "hD8BLsZFQEF33rKS6YopQUT3b6iLBG4nspe68/DBNBY=",
+          },
+          "numSubEntries": 9,
+          "seqNum": "70985857964185117",
+          "signers": Array [],
+          "thresholds": "AQAAAA==",
+        },
+      },
+      "ext": Object {
+        "_type": 0,
+      },
+      "lastModifiedLedgerSeq": 23416971,
+    },
+  },
+]
+`;
+
 exports[`#toXDR regression: SetOptionsOp sample 1`] = `
 Object {
   "clearFlags": undefined,
