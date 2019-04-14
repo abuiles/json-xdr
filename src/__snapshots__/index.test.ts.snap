@@ -52,8 +52,8 @@ Object {
 
 exports[`#toJSON option without value 1`] = `
 Object {
-  "meta": Object {
-    "_type": "rejected",
+  "ext": Object {
+    "_type": 0,
   },
 }
 `;
@@ -89,7 +89,7 @@ Object {
 exports[`Integration serializes and deserializes a Stellar transaction result 1`] = `
 Object {
   "ext": Object {
-    "_type": undefined,
+    "_type": 0,
   },
   "feeCharged": "300",
   "result": Object {

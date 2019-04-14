@@ -3,17 +3,16 @@ import { Array, Enum, Hyper, Opaque, Struct, Union, UnsignedHyper, VarArray, Var
 import { IStructConstructable, IUnionConstructor } from "./serializer";
 
 function toUnion(unionConstructor: IUnionConstructor, value): Union {
-  const discriminant = unionConstructor[value._type]();
-  let arm = discriminant._arm;
-  let armType = discriminant._armType;
+  const unionMeta = new unionConstructor(value._type, null);
+  let arm = unionMeta._arm;
+  let armType = unionMeta._armType;
 
-  // TODO: Handle void and default
-  if (!unionConstructor._switches.has(discriminant._switch) && unionConstructor._defaultArm) {
+  if (!unionConstructor._switches.has(unionMeta._switch) && unionConstructor._defaultArm) {
     armType = unionConstructor._defaultArm;
     arm = "default";
   }
 
-  return unionConstructor[value._type](toXDR(armType, value[arm]));
+  return new unionConstructor(value._type, toXDR(armType, value[arm]));
 }
 
 export default function toXDR(xdrType: any, value: any): any {

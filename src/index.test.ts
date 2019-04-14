@@ -1,8 +1,8 @@
 import * as XDR from "js-xdr";
-import StellarSdk from 'stellar-sdk';
+import StellarSdk from "stellar-sdk";
 import { toJSON, toXDR } from "./index";
 
-const STELLAR_HOST = 'https://horizon.stellar.org'
+const STELLAR_HOST = "https://horizon.stellar.org";
 
 const types = XDR.config((xdr) => {
   xdr.enum("Color", {
@@ -60,7 +60,7 @@ const types = XDR.config((xdr) => {
   });
 
   xdr.struct("TransactionResult", [
-    ["ext", xdr.lookup("TransactionResultExt")]
+    ["ext", xdr.lookup("TransactionResultExt")],
   ]);
 
   xdr.typedef("RejectionCode", xdr.option(xdr.int()));
@@ -80,7 +80,7 @@ const types = XDR.config((xdr) => {
   });
 
   xdr.struct("Transaction", [
-    ["meta", xdr.lookup("TransactionMeta")]
+    ["meta", xdr.lookup("TransactionMeta")],
   ]);
 
   xdr.struct("Envelope", [
@@ -156,11 +156,11 @@ describe("#toJSON", () => {
 
   test("union with int discriminant and int arm", () => {
     const transaction = new types.TransactionResult({
-      ext: new types.TransactionResultExt(0)
+      ext: new types.TransactionResultExt(0),
     });
 
     expect(toJSON(transaction)).toMatchSnapshot();
-  })
+  });
 
   test("option with value", () => {
     const transaction = new types.Transaction({
@@ -172,7 +172,7 @@ describe("#toJSON", () => {
 
   test("option without value", () => {
     const transaction = new types.TransactionResult({
-      ext: new types.TransactionResultExt(0)
+      ext: new types.TransactionResultExt(0),
     });
 
     expect(toJSON(transaction)).toMatchSnapshot();
@@ -274,12 +274,15 @@ describe("#toXDR", () => {
 describe("Integration", () => {
   test("serializes and deserializes a Stellar transaction result", async () => {
     const server = new StellarSdk.Server(STELLAR_HOST);
-    const transaction = await server.transactions().transaction('3389e9f0f1a65f19736cacf544c2e825313e8447f569233bb8db39aa607c8889').call();
+    const transaction = await server.
+      transactions().
+      transaction("3389e9f0f1a65f19736cacf544c2e825313e8447f569233bb8db39aa607c8889")
+      .call();
 
-    let xdr = StellarSdk.xdr.TransactionResult.fromXDR(transaction.result_xdr, 'base64')
-    let json = toJSON(xdr);
+    const xdr = StellarSdk.xdr.TransactionResult.fromXDR(transaction.result_xdr, "base64");
+    const json = toJSON(xdr);
 
     expect(json).toMatchSnapshot();
     toXDR(StellarSdk.xdr.TransactionResult, json);
-  })
+  });
 });
