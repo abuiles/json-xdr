@@ -33,6 +33,13 @@ describe("Integration", () => {
 
       xdrCopy = toXDR(StellarSdk.xdr.TransactionEnvelope, json);
       expect(transaction.envelope_xdr).toEqual(xdrCopy.toXDR().toString("base64"));
+
+      // Read LedgerEntryChanges, convert to JSON and back to XDR.
+      xdr = StellarSdk.xdr.LedgerEntryChanges.fromXDR(transaction.fee_meta_xdr, "base64");
+      json = toJSON(xdr);
+
+      xdrCopy = toXDR(StellarSdk.xdr.LedgerEntryChanges, json);
+      expect(transaction.fee_meta_xdr).toEqual(StellarSdk.xdr.LedgerEntryChanges.toXDR(xdrCopy).toString("base64"));
     };
 
     let transactions = await server.transactions().order("desc").limit(200).call();
