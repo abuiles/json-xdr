@@ -9,6 +9,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
+    "test:all": "RUN_INTEGRATION=1 jest",
     "lint:ts": "tslint --project .",
     "build": "rm -rf dist/ && tsc"
   },
@@ -21,9 +22,9 @@
     "prettier": "1.17.0",
     "ts-jest": "^24.0.1",
     "tslint": "^5.15.0",
-    "typescript": "^3.4.1"
+    "typescript": "^3.4.1",
+    "stellar-sdk": "^0.15.0"
   },
   "dependencies": {
-    "stellar-sdk": "^0.15.0"
   }
 }
