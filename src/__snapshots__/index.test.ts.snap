@@ -77,3 +77,44 @@ Object {
   },
 }
 `;
+
+exports[`Integration serializes and deserializes a Stellar transaction result 1`] = `
+Object {
+  "ext": Object {
+    "_type": undefined,
+  },
+  "feeCharged": "300",
+  "result": Object {
+    "_type": "txSuccess",
+    "results": Array [
+      Object {
+        "_type": "opInner",
+        "tr": Object {
+          "_type": "createAccount",
+          "createAccountResult": Object {
+            "_type": "createAccountSuccess",
+          },
+        },
+      },
+      Object {
+        "_type": "opInner",
+        "tr": Object {
+          "_type": "payment",
+          "paymentResult": Object {
+            "_type": "paymentSuccess",
+          },
+        },
+      },
+      Object {
+        "_type": "opInner",
+        "tr": Object {
+          "_type": "setOption",
+          "setOptionsResult": Object {
+            "_type": "setOptionsSuccess",
+          },
+        },
+      },
+    ],
+  },
+}
+`;
