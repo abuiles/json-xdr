@@ -1,11 +1,10 @@
-import { Struct } from "js-xdr";
-import { deserializeStruct } from "./deserializer";
-import { IStructConstructable, serializeStruct } from "./serializer";
+import deserialize from "./deserializer";
+import serialize from "./serializer";
 
-export function toJSON(struct: Struct): any {
-  return serializeStruct(struct);
+export function toJSON(xdr: any): object {
+  return serialize(xdr.constructor, xdr);
 }
 
-export function toXDR(structType: IStructConstructable, payload: object) {
-  return deserializeStruct(structType, payload);
+export function toXDR(typeDefinition: any, payload: object) {
+  return deserialize(typeDefinition, payload);
 }
