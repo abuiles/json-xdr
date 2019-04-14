@@ -258,5 +258,6 @@ describe("Integration", () => {
     let json = toJSON(xdr);
 
     expect(json).toMatchSnapshot();
+    toXDR(StellarSdk.xdr.TransactionResult, json);
   })
 });
