@@ -1,4 +1,5 @@
 import * as XDR from "js-xdr";
+import StellarSdk from "stellar-sdk";
 import { toJSON, toXDR } from "./index";
 
 const types = XDR.config((xdr) => {
@@ -238,7 +239,7 @@ describe("#toXDR", () => {
     expect(toJSON(xdrStructCopy)).toMatchObject(payload);
   });
 
-  test("option with value", () => {
+  test("union arm with option value - including option", () => {
     const payload = {
       meta:  {
         _type: "rejected",
@@ -253,7 +254,7 @@ describe("#toXDR", () => {
     expect(toJSON(xdrStructCopy)).toMatchObject(payload);
   });
 
-  test("option without value", () => {
+  test("union arm with option value - excluding option", () => {
     const payload = {
       meta:  {
         _type: "rejected",
@@ -265,5 +266,18 @@ describe("#toXDR", () => {
 
     expect(xdrStruct).toBeInstanceOf(types.Transaction);
     expect(toJSON(xdrStructCopy)).toMatchObject(payload);
+  });
+
+  test("regression: SetOptionsOp sample", () => {
+    const envelope = "AAAAAQAAAAAfpR7UY4+Podv9E4/IgUImlA8y6OKEQi8lJ8rRR8wMiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+    const xdr = StellarSdk.xdr.SetOptionsOp.fromXDR(envelope, "base64");
+
+    const json = toJSON(xdr);
+
+    expect(json).toMatchSnapshot();
+
+    const xdrCopy = toXDR(StellarSdk.xdr.SetOptionsOp, json);
+    expect(xdrCopy.toXDR().toString("base64")).toEqual(envelope);
   });
 });
