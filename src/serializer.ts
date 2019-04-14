@@ -8,7 +8,7 @@ export interface IStructConstructable {
 export interface IUnionConstructor {
   _switches: Map<any, any>;
   _defaultArm: any;
-  new(object): Struct;
+  new(aSwitch: any, value: any): any;
 }
 
 function serializeHyper(value: Hyper): string {
@@ -20,15 +20,15 @@ function serializeEnum({ name }: Enum): string {
 }
 
 function serializeUnion(union: Union): any {
-  const serialized = {};
+  const serialized = {
+    _type: null,
+  };
 
   if (union.switch() instanceof Enum) {
-    serialized["_type"] =  union.switch().name
+    serialized._type =  union.switch().name;
   } else {
-    serialized["_type"] =  union.switch()
+    serialized._type =  union.switch();
   }
-
-  debugger
 
   const value = serialize(union.armType(), union.value());
 
