@@ -25,12 +25,14 @@ describe("Integration", () => {
         expect(transaction.envelope_xdr).toEqual(xdrCopy.toXDR().toString("base64"));
       };
 
-      let transactions = await server.transactions().limit(100).call();
+      let transactions = await server.transactions().limit(200).call();
+
+      transactions = await transactions.next();
       transactions.records.forEach(testTransaction);
 
-      transactions = transactions.next();
+      transactions = await transactions.next();
       transactions.records.forEach(testTransaction);
-    }, 20000);
+    }, 50000);
   } else {
     test.todo("skipping integration tests - use `yarn test:all` to run all test");
   }
