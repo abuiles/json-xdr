@@ -1,8 +1,5 @@
 import * as XDR from "js-xdr";
-import StellarSdk from "stellar-sdk";
 import { toJSON, toXDR } from "./index";
-
-const STELLAR_HOST = "https://horizon.stellar.org";
 
 const types = XDR.config((xdr) => {
   xdr.enum("Color", {
@@ -268,21 +265,5 @@ describe("#toXDR", () => {
 
     expect(xdrStruct).toBeInstanceOf(types.Transaction);
     expect(toJSON(xdrStructCopy)).toMatchObject(payload);
-  });
-});
-
-describe("Integration", () => {
-  test("serializes and deserializes a Stellar transaction result", async () => {
-    const server = new StellarSdk.Server(STELLAR_HOST);
-    const transaction = await server.
-      transactions().
-      transaction("3389e9f0f1a65f19736cacf544c2e825313e8447f569233bb8db39aa607c8889")
-      .call();
-
-    const xdr = StellarSdk.xdr.TransactionResult.fromXDR(transaction.result_xdr, "base64");
-    const json = toJSON(xdr);
-
-    expect(json).toMatchSnapshot();
-    toXDR(StellarSdk.xdr.TransactionResult, json);
   });
 });
