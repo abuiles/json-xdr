@@ -1,4 +1,15 @@
-import { Array, Enum, Hyper, Opaque, String, Struct, Union, UnsignedHyper, VarArray, VarOpaque } from "js-xdr";
+import {
+  Array as XDRArray,
+  Enum,
+  Hyper,
+  Opaque,
+  String,
+  Struct,
+  Union,
+  UnsignedHyper,
+  VarArray,
+  VarOpaque,
+} from "js-xdr";
 
 export interface IStructConstructable {
   _fields: any[];
@@ -71,8 +82,17 @@ export default function serialize(xdrType: any, value: any): any {
   } else if (xdrType instanceof Opaque || xdrType instanceof VarOpaque) {
     // assume value it's buffer like
     return value.toString("base64");
-  } else if (xdrType instanceof Array || xdrType instanceof VarArray) {
+  } else if (xdrType instanceof XDRArray || xdrType instanceof VarArray) {
     return value.map((val) => serialize(xdrType._childType, val));
+  } else if (value instanceof Array) {
+    let childType;
+
+    if (value.length > 0) {
+      // We are receiving a JavaScript array, let's try to guess its elements type
+      childType = value[0].constructor;
+    }
+
+    return value.map((val) => serialize(childType, val));
   } else if (xdrType instanceof String) {
     return serializeString(value);
   } else if (value instanceof Struct) {

@@ -280,4 +280,18 @@ describe("#toXDR", () => {
     const xdrCopy = toXDR(StellarSdk.xdr.SetOptionsOp, json);
     expect(xdrCopy.toXDR().toString("base64")).toEqual(envelope);
   });
+
+  test("regression: LedgerEntryChanges", () => {
+    const feeMetaXDR =  "AAAAAgAAAAMBZVCDAAAAAAAAAABlSsW9Jq8PhXQCrA7SkI/acEWg8fKgoRi0Uso8lt2YOwAAAAbpWtEvAPwxQwAIFh0AAAAJAAAAAQAAAACEPwEuxkVAQXfespLpiilBRPdvqIsEbieyl7rz8ME0FgAAAAAAAAAAAQAAAAAAAAAAAAABAAAANxVRwcAAAAAGy41yaAAAAAAAAAAAAAAAAQFlUIsAAAAAAAAAAGVKxb0mrw+FdAKsDtKQj9pwRaDx8qChGLRSyjyW3Zg7AAAABulayu8A/DFDAAgWHQAAAAkAAAABAAAAAIQ/AS7GRUBBd96ykumKKUFE92+oiwRuJ7KXuvPwwTQWAAAAAAAAAAABAAAAAAAAAAAAAAEAAAA3FVHBwAAAAAbLjXJoAAAAAAAAAAA=";
+
+    const xdr = StellarSdk.xdr.LedgerEntryChanges.fromXDR(feeMetaXDR, "base64");
+
+    const json = toJSON(xdr);
+
+    expect(json).toMatchSnapshot();
+
+    const xdrCopy = toXDR(StellarSdk.xdr.LedgerEntryChanges, json);
+
+    expect(StellarSdk.xdr.LedgerEntryChanges.toXDR(xdrCopy).toString("base64")).toEqual(feeMetaXDR);
+  });
 });
