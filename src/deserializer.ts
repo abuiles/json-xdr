@@ -27,7 +27,7 @@ export default function toXDR(xdrType: any, value: any): any {
     // Optionally we could pass through if it is a buffer instance.
     return Buffer.from(value, "base64");
   } else if (xdrType instanceof Array || xdrType instanceof VarArray) {
-    return value.map((val) => Buffer.from(val, "base64"));
+    return value.map((val) => toXDR(xdrType._childType, val));
   } else if (Object.getPrototypeOf(xdrType) === Struct) {
     return deserializeStruct(xdrType, value);
   } else if (Object.getPrototypeOf(xdrType) === Union) {
