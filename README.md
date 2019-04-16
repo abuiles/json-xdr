@@ -270,7 +270,7 @@ store in the property `_type`. If there is an arm for the given
 discriminant, then a property with the arm's name is set in the object
 and its value should contain a type as defined in the XDR declaration.
 
-The following struct has two property of type union: `memo` and `meta`.
+The following struct has two properties of type union: `memo` and `meta`.
 
 ``` javascript
 let event = new types.Event({
