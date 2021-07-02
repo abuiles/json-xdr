@@ -20,7 +20,7 @@
     "jest": "^24.7.1",
     "js-xdr": "^1.1.1",
     "prettier": "1.17.0",
-    "stellar-sdk": "^3.3.0",
+    "stellar-sdk": "^8.2.3",
     "ts-jest": "^24.0.1",
     "tslint": "^5.15.0",
     "typescript": "^3.4.1"
